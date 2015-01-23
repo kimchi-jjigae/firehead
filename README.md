@@ -12,3 +12,15 @@
                                                                    /_/ 
 # firehead
 GGJ15
+
+
+# getting that haxe stuff started
+Install flashdevelop http://www.flashdevelop.org/
+Then install openfl with haxe, there's a guide here yo: 
+http://www.openfl.org/documentation/getting-started/installing-openfl/
+
+then run this in cmd 
+haxelib install flixel
+haxelib install flixel-tools
+
+try to build it after that I guess. dunno.
