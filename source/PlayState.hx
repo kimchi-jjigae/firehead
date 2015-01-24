@@ -7,17 +7,31 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 
+import flixel.FlxCamera;
+
 /**
  * A FlxState which can be used for the actual gameplay.
  */
 class PlayState extends FlxState
 {
+
+    var bg:Background;
+    var player:Player;
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
 		super.create();
+        bg = new Background();
+        add(bg);
+
+        player = new Player();
+        FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
+        add(player);
+
+
 	}
 	
 	/**
