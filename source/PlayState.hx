@@ -86,7 +86,9 @@ class PlayState extends FlxState
 
         snowSystem.setWindSpeed(player.velocity.x * 0.0001);
 
-        layers.setTime(player.x * 0.01);
+        if(FlxG.keys.anyPressed(["SPACE"])){
+            layers.toggleDay();
+        }
 
         for(flake in snowSystem.getSnowflakes())
         {

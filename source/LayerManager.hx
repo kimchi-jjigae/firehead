@@ -2,10 +2,14 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 
+import flixel.tweens.FlxTween;
+
 class LayerManager extends FlxGroup {
 
     var layers:Array<FlxGroup>;
-    
+
+
+    var time:Float = 0;
     private var foreground:FlxGroup;
 
     public function new(maxSize:Int = 2)
@@ -16,7 +20,7 @@ class LayerManager extends FlxGroup {
         addLayer(AssetPaths.bg_day_clear__png, 1280, 724, 0.1);
         addLayer(AssetPaths.mountains__png, 1280, 724, 0.4);
         addLayer(AssetPaths.bg_texture_snow__png, 1280, 724, 1.0);
-        
+
 
         foreground = new FlxGroup();
 
@@ -29,10 +33,27 @@ class LayerManager extends FlxGroup {
         setTime(1);
     }
 
-    public function setTime(time:Float):Void {
+    public function setTime(_time:Float):Void {
+        time = _time;
         for(img in layers[1].members) {
-            cast(img, FlxSprite).alpha = time;
+            FlxTween.tween(cast(img, FlxSprite), { alpha:time }, .6);
         }
+    }
+
+    public function toggleDay():Void {
+        if(time > 0){
+            setTime(0);
+        }else{
+            setTime(1);
+        }
+    }
+
+    public function night():Void {
+        setTime(0);
+    }
+
+    public function day():Void {
+        setTime(1);
     }
 
     public function getForegroundLayer():FlxGroup {
