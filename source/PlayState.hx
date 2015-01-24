@@ -18,8 +18,8 @@ import flixel.FlxCamera;
  */
 class PlayState extends FlxState
 {
-    var canvas = new FlxSprite();
-    var snowSystem:SnowSystem = new SnowSystem();
+    var canvas:FlxSprite;
+    var snowSystem:SnowSystem;
     var physics:Physics;
 
     var bg:Background;
@@ -33,20 +33,24 @@ class PlayState extends FlxState
 	{
 		super.create();
 
-        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+        canvas = new FlxSprite();
+        snowSystem = new SnowSystem();
         
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+
         // Actual iteration bellow
         for(flake in snowSystem.getSnowflakes())
         {
             canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
         }
-
+        
         bg = new Background();
         add(bg);
 
         player = new Player();
-        FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
+        FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         add(player);
+        add(canvas);
 
         npc = new NPC(150,360);
         add(npc);
@@ -69,6 +73,13 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
         canvas.fill(FlxColor.TRANSPARENT);
+
+        for(flake in snowSystem.getSnowflakes())
+        {
+            canvas.drawCircle(flake.x, flake.y, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
+        }
+
         snowSystem.update();
 		super.update();
 	}	
