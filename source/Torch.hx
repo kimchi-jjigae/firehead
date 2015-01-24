@@ -18,7 +18,7 @@ class Torch extends FlxGroup
         darkPart.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, false);
         darkPart.scrollFactor.x = darkPart.scrollFactor.y = 0;
         darkPart.blend = BlendMode.MULTIPLY;
-        add(darkPart);
+        //add(darkPart);
 
         torchPart = new FlxSprite();
         torchPart.loadGraphic(AssetPaths.glow2__png, true, FlxG.width, FlxG.height);
@@ -28,7 +28,7 @@ class Torch extends FlxGroup
         //torchPart.scale.x = 0.4;
         //torchPart.scale.y = 0.4;
 
-        add(torchPart);
+        //add(torchPart);
     }
 
     public function render():Void {
