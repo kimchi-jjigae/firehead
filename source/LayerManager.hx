@@ -30,7 +30,7 @@ class LayerManager extends FlxGroup {
         addLayer(AssetPaths.fogfront__png, 1280, 724, 1.1);
 
         addLayer(AssetPaths.coolface__png, 1280, 724, 1.75);
-        setTime(1);
+        night();
     }
 
     public function setTime(_time:Float):Void {
