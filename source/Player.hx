@@ -20,6 +20,7 @@ class Player extends FlxSprite
         setFacingFlip(FlxObject.LEFT, false, false);
         setFacingFlip(FlxObject.RIGHT, true, false);
         animation.add("lr", [1, 2, 3], 6, false);
+        animation.add("lr", [0, 1, 0, 2], 6, false);
         animation.add("u", [6, 7, 6, 8], 6, false);
         animation.add("d", [0, 1, 0, 2], 6, false);
         drag.x = drag.y = 1600;
@@ -83,7 +84,10 @@ class Player extends FlxSprite
                 }
             }
         }
+    }
 
+    public function grow(amount:Float = 1.0):Void {
+        
     }
 
     // private function dialogue():Void{
