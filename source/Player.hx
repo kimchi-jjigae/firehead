@@ -16,15 +16,16 @@ class Player extends FlxSprite
     {
         super(X, Y);
         // makeGraphic(16, 16, FlxColor.BLUE);
-        loadGraphic(AssetPaths.player__png, true, 16, 16);
+        loadGraphic(AssetPaths.stand_still_200__png, true, 52, 39);
         setFacingFlip(FlxObject.LEFT, false, false);
         setFacingFlip(FlxObject.RIGHT, true, false);
-        animation.add("lr", [3, 4, 3, 5], 6, false);
+        animation.add("lr", [1, 2, 3, 4], 10, false);
+        animation.add("lr", [0, 1, 0, 2], 6, false);
         animation.add("u", [6, 7, 6, 8], 6, false);
         animation.add("d", [0, 1, 0, 2], 6, false);
         drag.x = drag.y = 1600;
         acceleration.y = 0;
-        y = 360;
+        // y = 360;
     }
 
     private function movement():Void {
@@ -33,10 +34,12 @@ class Player extends FlxSprite
         var _left:Bool = false;
         var _right:Bool = false;
 
-       // _up = FlxG.keys.anyPressed(["UP", "W"]);
-       // _down = FlxG.keys.anyPressed(["DOWN", "S"]);
+        _up = FlxG.keys.anyPressed(["UP", "W"]);
+        _down = FlxG.keys.anyPressed(["DOWN", "S"]);
         _left = FlxG.keys.anyPressed(["LEFT", "A"]);
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+
+        animation.play("lr");
 
         if (_up && _down) 
             _up = _down = false;
@@ -83,6 +86,9 @@ class Player extends FlxSprite
                 }
             }
         }
+    }
+
+    public function grow(amount:Float = 1.0):Void {
 
     }
 

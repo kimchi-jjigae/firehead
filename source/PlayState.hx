@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -20,10 +21,14 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
+    
+    // var physics:Physics;
+    var text:FlxText;
 
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
+    var timer:FlxTimer;
 
     var placeManager:Map<String, Place>;
 
@@ -42,17 +47,21 @@ class PlayState extends FlxState
         layers = new LayerManager();
         add(layers);
 
-        player = new Player();
+        // text = new FlxText(150, 300, 200, "Test");
+        // text.color = 0xFFFF66;
+        // add(text);
+
+        player = new Player(81,340);
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         
 
         layers.getForegroundLayer().add(player);
-        add(canvas);
+        layers.getForegroundLayer().add(canvas);
 
         FlxG.camera.fade(FlxColor.BLACK, .33, true);
 
         npc = new NPC(150,360);
-        add(npc);
+        layers.getForegroundLayer().add(npc);
 
         placeManager = new Map<String, Place>();
         placeManager.set("01_darkness", new Place(0, 100));
@@ -73,12 +82,17 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+        canvas.x = FlxG.camera.target.x + FlxG.camera.target.width * 0.5 - FlxG.width * 0.5;
         canvas.fill(FlxColor.TRANSPARENT);
+
+        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+
+        layers.setTime(player.x * 0.01);
 
         for(flake in snowSystem.getSnowflakes())
         {
-            canvas.drawCircle(flake.x, flake.y, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
+            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.5, 0xCCEDFEFF);
         }
 
         var placeIter = placeManager.keys();
@@ -94,11 +108,32 @@ class PlayState extends FlxState
                 }
                 else
                 {
+                    // do shit here
+                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
                 }
             }
             else
             {
             }
+        }
+
+        if (Math.abs(npc.x - player.x) <= 20) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+        }
+        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
+            // text.destroy();
+            // trace("Test");
+        }
+
+        if(FlxG.keys.justPressed.ENTER) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+            new FlxTimer(5, destroyText, 1);
+            // timer.start();
+            // text.destroy();
         }
 
         snowSystem.update();
@@ -115,5 +150,15 @@ class PlayState extends FlxState
         {
             //trace("you're reading text\n");
         }
+    }
+
+    private function changeText(Timer:FlxTimer):Void {
+        text = new FlxText(150, 300, 200, "I'm new!");
+        text.color = 0xFFFF66;
+        add(text);
+    }
+
+    private function destroyText(Timer:FlxTimer):Void {
+        text.destroy();
     }
 }
