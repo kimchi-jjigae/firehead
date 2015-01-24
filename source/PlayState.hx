@@ -19,7 +19,7 @@ import flixel.FlxCamera;
 class PlayState extends FlxState
 {
     var canvas:FlxSprite;
-    var snowSystem:SnowSystem = new SnowSystem();
+    var snowSystem:SnowSystem;
     var physics:Physics;
 
     var bg:Background;
@@ -35,6 +35,8 @@ class PlayState extends FlxState
         canvas = new FlxSprite();
         snowSystem = new SnowSystem();
         
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+
         // Actual iteration bellow
         for(flake in snowSystem.getSnowflakes())
         {
@@ -47,9 +49,8 @@ class PlayState extends FlxState
         player = new Player();
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         add(player);
-
-        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
         add(canvas);
+
 	}
 	
 	/**
