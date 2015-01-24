@@ -31,15 +31,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
-
-        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
         
-        // Actual iteration bellow
-        for(flake in snowSystem.getSnowflakes())
-        {
-            canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
-        }
-
         bg = new Background();
         add(bg);
 
@@ -47,7 +39,8 @@ class PlayState extends FlxState
         FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
         add(player);
 
-        //add(canvas);
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+        add(canvas);
 	}
 	
 	/**
@@ -65,6 +58,13 @@ class PlayState extends FlxState
 	override public function update():Void
 	{
         canvas.fill(FlxColor.TRANSPARENT);
+
+        for(flake in snowSystem.getSnowflakes())
+        {
+            canvas.drawCircle(flake.x, flake.y, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
+        }
+
         snowSystem.update();
 		super.update();
 	}	

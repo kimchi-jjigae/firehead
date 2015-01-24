@@ -6,12 +6,15 @@ import flixel.util.FlxRandom;
 class SnowSystem
 {
     var snowflakes:Array<FlxPoint>;
+    var gravity:Float;
+
     public function new()
     {
+        gravity = 1.1;
         snowflakes = new Array<FlxPoint>();
         for(i in 0...10)
         {
-            var newPoint = new FlxPoint(FlxRandom.floatRanged(0, 640), FlxRandom.floatRanged(0, 50));
+            var newPoint = new FlxPoint(FlxRandom.floatRanged(0, 640), FlxRandom.floatRanged(0, 480));
             snowflakes.push(newPoint);
         }
     }
@@ -23,5 +26,9 @@ class SnowSystem
 
     public function update():Void
     {
+        for(flake in snowflakes)
+        {
+            flake.y += gravity;
+        }
     }
 }
