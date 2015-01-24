@@ -88,8 +88,8 @@ class PlayState extends FlxState
 
         for(flake in snowSystem.getSnowflakes())
         {
-            canvas.drawCircle(flake.x - canvas.x, flake.y, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x - canvas.x, flake.y, 1.5, 0xCCEDFEFF);
+            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.5, 0xCCEDFEFF);
         }
 
         for(place in placeManager)
