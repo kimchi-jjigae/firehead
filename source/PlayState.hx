@@ -21,7 +21,7 @@ class PlayState extends FlxState
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
 
-    var bg:Background;
+    var layers:LayerManager;
     var player:Player;
     var npc:NPC;
 
@@ -39,12 +39,14 @@ class PlayState extends FlxState
         
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
-        bg = new Background();
-        add(bg);
+        layers = new LayerManager();
+        add(layers);
 
         player = new Player();
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
-        add(player);
+        
+
+        layers.getForegroundLayer().add(player);
         add(canvas);
 
         FlxG.camera.fade(FlxColor.BLACK, .33, true);
