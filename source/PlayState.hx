@@ -64,9 +64,14 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(npc);
 
         placeManager = new Map<String, Place>();
+<<<<<<< HEAD
         placeManager.set("01_darkness", new Place(0, 1));
 
         // FlxG.sound.playMusic("music_1");
+=======
+        placeManager.set("01_darkness", new Place(0, 100));
+        placeManager.set("02_introtext", new Place(200, 100));
+>>>>>>> e3ac8c309162f49e9f8585b609e4d35b749b71b9
 	}
 	
 	/**
@@ -83,10 +88,12 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
-        canvas.x = FlxG.camera.target.x - FlxG.width * 0.5;
+        canvas.x = FlxG.camera.target.x + FlxG.camera.target.width * 0.5 - FlxG.width * 0.5;
         canvas.fill(FlxColor.TRANSPARENT);
 
         snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+
+        layers.setTime(player.x * 0.01);
 
         for(flake in snowSystem.getSnowflakes())
         {
@@ -94,16 +101,25 @@ class PlayState extends FlxState
             canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.5, 0xCCEDFEFF);
         }
 
-        for(place in placeManager)
+        var placeIter = placeManager.keys();
+        for(key in placeIter)
         {
+            var place = placeManager.get(key);
             if(!place.inactivated)
             {
                 if((player.x >= place.xPosition) && 
                    (player.x <= place.xPosition + place.width))
                 {
+                    runPlaceFunction(key);
+                }
+                else
+                {
                     // do shit here
                     //Lib.utils.shit("really much", function(){ alsoFart(101); });
                 }
+            }
+            else
+            {
             }
         }
 
@@ -129,6 +145,18 @@ class PlayState extends FlxState
         snowSystem.update();
 		super.update();
 	}	
+
+    public function runPlaceFunction(place:String)
+    {
+        if(place == "01_darkness")
+        {
+            //trace("you're in darkness\n");
+        }
+        else if(place == "02_introtext")
+        {
+            //trace("you're reading text\n");
+        }
+    }
 
     private function changeText(Timer:FlxTimer):Void {
         text = new FlxText(150, 300, 200, "I'm new!");

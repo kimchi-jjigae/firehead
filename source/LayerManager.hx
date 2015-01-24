@@ -13,6 +13,7 @@ class LayerManager extends FlxGroup {
         super(10);
         layers = new Array<FlxGroup>();
         addLayer(AssetPaths.bg_night_clear__png, 1280, 724, 0.1);
+        addLayer(AssetPaths.bg_day_clear__png, 1280, 724, 0.1);
         addLayer(AssetPaths.mountains__png, 1280, 724, 0.4);
         addLayer(AssetPaths.bg_texture_snow__png, 1280, 724, 1.0);
         
@@ -21,9 +22,17 @@ class LayerManager extends FlxGroup {
 
         add(foreground);
         layers.push(foreground);
-        
+
+        addLayer(AssetPaths.fogfront__png, 1280, 724, 1.1);
 
         addLayer(AssetPaths.coolface__png, 1280, 724, 1.75);
+        setTime(1);
+    }
+
+    public function setTime(time:Float):Void {
+        for(img in layers[1].members) {
+            cast(img, FlxSprite).alpha = time;
+        }
     }
 
     public function getForegroundLayer():FlxGroup {
