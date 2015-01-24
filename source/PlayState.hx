@@ -28,6 +28,7 @@ class PlayState extends FlxState
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
+    // var legs:Legs;
     var timer:FlxTimer;
 
     var placeManager:Map<String, Place>;
@@ -38,6 +39,8 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
 		super.create();
+
+        FlxG.sound.playMusic("music_1");
 
         canvas = new FlxSprite();
         snowSystem = new SnowSystem(0, 200);
@@ -51,12 +54,15 @@ class PlayState extends FlxState
         // text.color = 0xFFFF66;
         // add(text);
 
-        player = new Player(81,340);
+        // legs = new Legs(90,370);
+
+        player = new Player(75,335);
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         
 
         layers.getForegroundLayer().add(player);
         layers.getForegroundLayer().add(canvas);
+        // layers.getForegroundLayer().add(legs);
 
         FlxG.camera.fade(FlxColor.BLACK, .33, true);
 
@@ -64,14 +70,10 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(npc);
 
         placeManager = new Map<String, Place>();
-<<<<<<< HEAD
         placeManager.set("01_darkness", new Place(0, 1));
 
-        // FlxG.sound.playMusic("music_1");
-=======
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
->>>>>>> e3ac8c309162f49e9f8585b609e4d35b749b71b9
 	}
 	
 	/**
