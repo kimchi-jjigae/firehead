@@ -20,4 +20,8 @@ class SnowSystem
     {
         return snowflakes;
     }
+
+    public function update():Void
+    {
+    }
 }
