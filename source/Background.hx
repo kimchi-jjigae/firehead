@@ -3,45 +3,31 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 
 class Background extends FlxGroup {
-    var images:Array<FlxSprite>;
-    var activebg:FlxSprite;
-    var secondarybg:FlxSprite;
 
-    var bgWidth:Float = 1280;
+    var layers:Array<BackgroundLayer>;
 
-    public function new(maxSize:Int = 3)
+    public function new(maxSize:Int = 2)
     {
-        super(maxSize);
-        images = new Array<FlxSprite>();
-        var bgnight:FlxSprite = new FlxSprite();
-        bgnight.loadGraphic(AssetPaths.bg_night_clear__png, true, 1280, 724);
-        add(bgnight);
-        images.push(bgnight);
-        activebg = bgnight;
+        super(5);
 
-        bgnight = new FlxSprite();
-        bgnight.loadGraphic(AssetPaths.bg_night_clear__png, true, 1280, 724);
-        add(bgnight);
-        images.push(bgnight);
-        bgnight.x = 1280;
-        secondarybg = bgnight;
+        layers = new Array<BackgroundLayer>();
+        addLayer(AssetPaths.bg_night_clear__png, 1280, 724, 0.5);
+        addLayer(AssetPaths.mountains__png, 1280, 724, 0.75);
+        addLayer(AssetPaths.bg_texture_snow__png, 1280, 724, 1.0);
+
+    }
+
+    private function addLayer(name:String, width:Int, height:Int, scale:Float){
+        var bg:BackgroundLayer = new BackgroundLayer(5, scale, name,
+                width, height);
+        add(bg);
+
+        layers.push(bg);
     }
 
     override public function update():Void {
-
-        var dx:Float =activebg.x - FlxG.camera.target.x  + bgWidth * 0.5;
-
-        if(dx < 0){
-            secondarybg.x = activebg.x + bgWidth;
-        }else{
-            secondarybg.x = activebg.x - bgWidth;
+        for(layer in layers){
+            layer.update();
         }
-
-        if(Math.abs(dx) > bgWidth){
-            var d:FlxSprite = secondarybg;
-            secondarybg = activebg;
-            activebg = d;
-        }
-
     }
 }

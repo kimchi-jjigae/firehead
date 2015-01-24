@@ -45,10 +45,10 @@ class PlayState extends FlxState
         add(player);
         add(canvas);
 
+        FlxG.camera.fade(FlxColor.BLACK, .33, true);
+
         npc = new NPC(150,360);
         add(npc);
-
-        //add(canvas);
 	}
 	
 	/**
