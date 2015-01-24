@@ -20,7 +20,6 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
-    var physics:Physics;
 
     var bg:Background;
     var player:Player;
