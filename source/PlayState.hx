@@ -25,6 +25,8 @@ class PlayState extends FlxState
     var player:Player;
     var npc:NPC;
 
+    var placeManager:Map<String, Place>;
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
@@ -51,6 +53,9 @@ class PlayState extends FlxState
 
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
+
+        placeManager = new Map<String, Place>();
+        placeManager.set("01_darkness", new Place(0, 1));
 	}
 	
 	/**
@@ -74,6 +79,18 @@ class PlayState extends FlxState
         {
             canvas.drawCircle(flake.x - canvas.x, flake.y, 3, 0x77A2F1F2);
             canvas.drawCircle(flake.x - canvas.x, flake.y, 1.5, 0xCCEDFEFF);
+        }
+
+        for(place in placeManager)
+        {
+            if(!place.inactivated)
+            {
+                if((player.x >= place.xPosition) && 
+                   (player.x <= place.xPosition + place.width))
+                {
+                    // do shit here
+                }
+            }
         }
 
         snowSystem.update();
