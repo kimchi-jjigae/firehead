@@ -64,14 +64,9 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(npc);
 
         placeManager = new Map<String, Place>();
-<<<<<<< HEAD
-        placeManager.set("01_darkness", new Place(0, 1));
-
         // FlxG.sound.playMusic("music_1");
-=======
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
->>>>>>> e3ac8c309162f49e9f8585b609e4d35b749b71b9
 	}
 	
 	/**
