@@ -83,7 +83,10 @@ class Player extends FlxSprite
                 }
             }
         }
+    }
 
+    public function grow(amount:Float = 1.0):Void {
+        
     }
 
     // private function dialogue():Void{
