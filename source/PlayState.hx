@@ -45,12 +45,12 @@ class PlayState extends FlxState
         
 
         layers.getForegroundLayer().add(player);
-        add(canvas);
+        layers.getForegroundLayer().add(canvas);
 
         FlxG.camera.fade(FlxColor.BLACK, .33, true);
 
         npc = new NPC(150,360);
-        add(npc);
+        layers.getForegroundLayer().add(npc);
 	}
 	
 	/**
@@ -67,12 +67,13 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+        canvas.x = FlxG.camera.target.x - FlxG.width * 0.5;
         canvas.fill(FlxColor.TRANSPARENT);
 
         for(flake in snowSystem.getSnowflakes())
         {
-            canvas.drawCircle(flake.x, flake.y, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
+            canvas.drawCircle(flake.x - canvas.x, flake.y, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x, flake.y, 1.5, 0xCCEDFEFF);
         }
 
         snowSystem.update();
