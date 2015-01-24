@@ -55,7 +55,8 @@ class PlayState extends FlxState
         add(npc);
 
         placeManager = new Map<String, Place>();
-        placeManager.set("01_darkness", new Place(0, 1));
+        placeManager.set("01_darkness", new Place(0, 100));
+        placeManager.set("02_introtext", new Place(200, 100));
 	}
 	
 	/**
@@ -80,19 +81,39 @@ class PlayState extends FlxState
             canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
         }
 
-        for(place in placeManager)
+        var placeIter = placeManager.keys();
+        for(key in placeIter)
         {
+            var place = placeManager.get(key);
             if(!place.inactivated)
             {
                 if((player.x >= place.xPosition) && 
                    (player.x <= place.xPosition + place.width))
                 {
-                    // do shit here
+                    runPlaceFunction(key);
                 }
+                else
+                {
+                }
+            }
+            else
+            {
             }
         }
 
         snowSystem.update();
 		super.update();
 	}	
+
+    public function runPlaceFunction(place:String)
+    {
+        if(place == "01_darkness")
+        {
+            //trace("you're in darkness\n");
+        }
+        else if(place == "02_introtext")
+        {
+            //trace("you're reading text\n");
+        }
+    }
 }
