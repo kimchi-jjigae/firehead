@@ -16,7 +16,7 @@ class BackgroundLayer extends FlxGroup {
     public function new(maxSize:Int = 2, scale:Float, image:String, width:Int, height:Int) {
         super(maxSize);
 
-        bgWidth = width - 1;
+        bgWidth = width;
         moveScale = scale;
 
         var bgnight:FlxSprite = new FlxSprite();
