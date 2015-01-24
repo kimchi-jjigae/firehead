@@ -31,22 +31,24 @@ class PlayState extends FlxState
 	{
 		super.create();
 
+        snowSystem = new SnowSystem();
+        
         var canvas = new FlxSprite();
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
         add(canvas);
 
-        var iter = snowSystem.getSnowflakes().iterator();
+        var iter = snowSystem.getSnowflakes();
         // Actual iteration bellow
         for(flake in iter)
         {
            canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
         }
-
+        
         bg = new Background();
         add(bg);
 
         player = new Player();
-        FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
+        FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         add(player);
 
 	}
