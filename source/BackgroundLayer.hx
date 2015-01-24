@@ -36,14 +36,13 @@ class BackgroundLayer extends FlxGroup {
 
     override public function update():Void {
         
-        var dx:Float = lastX - FlxG.camera.target.x;
-
+        var dx:Float = lastX - FlxG.camera.scroll.x;
 
         activebg.x -= (1.0 - moveScale) * dx;
 
-        lastX = FlxG.camera.target.x;
+        lastX = FlxG.camera.scroll.x;
 
-        dx = activebg.x - FlxG.camera.target.x + bgWidth * 0.5;
+        dx = activebg.x - FlxG.camera.scroll.x;
 
         if(dx < 0){
             secondarybg.x = activebg.x + bgWidth;

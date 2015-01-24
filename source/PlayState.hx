@@ -58,13 +58,15 @@ class PlayState extends FlxState
 
         player = new Player(75,335);
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
+        player = new Player(81,340);
+        FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
         
 
         layers.getForegroundLayer().add(player);
         layers.getForegroundLayer().add(canvas);
         // layers.getForegroundLayer().add(legs);
 
-        FlxG.camera.fade(FlxColor.BLACK, .33, true);
+        FlxG.camera.fade(FlxColor.BLACK, 2, true);
 
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
@@ -72,6 +74,8 @@ class PlayState extends FlxState
         placeManager = new Map<String, Place>();
         placeManager.set("01_darkness", new Place(0, 1));
 
+        // FlxG.sound.playMusic("music_1");
+        
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
 	}
@@ -90,12 +94,18 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
-        canvas.x = FlxG.camera.target.x + FlxG.camera.target.width * 0.5 - FlxG.width * 0.5;
+        canvas.x = FlxG.camera.scroll.x;
         canvas.fill(FlxColor.TRANSPARENT);
 
         snowSystem.setWindSpeed(player.velocity.x * 0.0001);
 
-        layers.setTime(player.x * 0.01);
+        if(FlxG.keys.anyPressed(["N"])){
+            layers.night();
+        }
+
+        if(FlxG.keys.anyPressed(["M"])){
+            layers.day();
+        }
 
         for(flake in snowSystem.getSnowflakes())
         {
