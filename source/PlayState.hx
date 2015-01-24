@@ -24,6 +24,7 @@ class PlayState extends FlxState
 
     var bg:Background;
     var player:Player;
+    var npc:NPC;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -46,6 +47,9 @@ class PlayState extends FlxState
         player = new Player();
         FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
         add(player);
+
+        npc = new NPC(150,360);
+        add(npc);
 
         //add(canvas);
 	}
