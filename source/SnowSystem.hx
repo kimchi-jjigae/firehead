@@ -8,13 +8,13 @@ class SnowSystem
     var snowflakes:Array<FlxPoint>;
     var gravity:Float;
 
-    public function new()
+    public function new(position:Float, width:Float)
     {
         gravity = 1.1;
         snowflakes = new Array<FlxPoint>();
         for(i in 0...10)
         {
-            var newPoint = new FlxPoint(FlxRandom.floatRanged(0, 640), FlxRandom.floatRanged(0, 480));
+            var newPoint = new FlxPoint(FlxRandom.floatRanged(position, position + width), FlxRandom.floatRanged(-40, 0));
             snowflakes.push(newPoint);
         }
     }

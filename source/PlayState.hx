@@ -33,7 +33,7 @@ class PlayState extends FlxState
 		super.create();
 
         canvas = new FlxSprite();
-        snowSystem = new SnowSystem();
+        snowSystem = new SnowSystem(0, 200);
         
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
