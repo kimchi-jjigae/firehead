@@ -75,6 +75,8 @@ class PlayState extends FlxState
         canvas.x = FlxG.camera.target.x - FlxG.width * 0.5;
         canvas.fill(FlxColor.TRANSPARENT);
 
+        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+
         for(flake in snowSystem.getSnowflakes())
         {
             canvas.drawCircle(flake.x - canvas.x, flake.y, 3, 0x77A2F1F2);
@@ -89,6 +91,7 @@ class PlayState extends FlxState
                    (player.x <= place.xPosition + place.width))
                 {
                     // do shit here
+                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
                 }
             }
         }
