@@ -30,6 +30,8 @@ class PlayState extends FlxState
     var npc:NPC;
     var timer:FlxTimer;
 
+    var torch:Torch;
+
     var placeManager:Map<String, Place>;
 
 	/**
@@ -67,8 +69,11 @@ class PlayState extends FlxState
         // FlxG.sound.playMusic("music_1");
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
+
+        torch = new Torch();
+        add(torch);
 	}
-	
+
 	/**
 	 * Function that is called when this state is destroyed - you might want to 
 	 * consider setting all objects this state uses to null to help garbage collection.
@@ -146,6 +151,11 @@ class PlayState extends FlxState
         snowSystem.update();
 		super.update();
 	}	
+
+
+    public function registerPlace(p:Place):Place {
+        return null;
+    }
 
     public function runPlaceFunction(place:String)
     {

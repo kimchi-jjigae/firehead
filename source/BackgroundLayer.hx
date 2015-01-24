@@ -30,7 +30,6 @@ class BackgroundLayer extends FlxGroup {
         add(bgnight);
 
         secondarybg = bgnight;
-
         bgnight.x = bgWidth;
     }
 
