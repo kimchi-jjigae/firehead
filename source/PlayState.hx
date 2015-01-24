@@ -2,22 +2,40 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.util.FlxSpriteUtil;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
+import flixel.util.FlxColor;
+
+using flixel.util.FlxSpriteUtil;
 
 /**
  * A FlxState which can be used for the actual gameplay.
  */
 class PlayState extends FlxState
 {
+    private var snowSystem:SnowSystem;
+    private var physics:Physics;
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
 		super.create();
+
+        var canvas = new FlxSprite();
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+        add(canvas);
+
+        var iter = snowSystem.getSnowflakes().iterator();
+        // Actual iteration bellow
+        for(flake in iter)
+        {
+           canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
+        }
 	}
 	
 	/**
@@ -34,6 +52,7 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+        //canvas.fill(FlxColor.TRANSPARENT);
 		super.update();
 	}	
 }
