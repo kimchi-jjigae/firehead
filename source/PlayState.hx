@@ -20,7 +20,6 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
-    var physics:Physics;
 
     var bg:Background;
     var player:Player;
@@ -34,7 +33,7 @@ class PlayState extends FlxState
 		super.create();
 
         canvas = new FlxSprite();
-        snowSystem = new SnowSystem();
+        snowSystem = new SnowSystem(0, 200);
         
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
