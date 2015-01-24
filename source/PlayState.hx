@@ -38,12 +38,6 @@ class PlayState extends FlxState
         
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
-        // Actual iteration bellow
-        for(flake in snowSystem.getSnowflakes())
-        {
-            canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
-        }
-        
         bg = new Background();
         add(bg);
 
