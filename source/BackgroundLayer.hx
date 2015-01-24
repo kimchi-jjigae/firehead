@@ -2,34 +2,48 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 
-class Background extends FlxGroup {
-    var images:Array<FlxSprite>;
+class BackgroundLayer extends FlxGroup {
+
     var activebg:FlxSprite;
     var secondarybg:FlxSprite;
 
-    var bgWidth:Float = 1280;
+    private var bgWidth:Float;
 
-    public function new(maxSize:Int = 3)
-    {
+    public var moveScale:Float;
+
+    private var lastX:Float = 0;
+
+    public function new(maxSize:Int = 2, scale:Float, image:String, width:Int, height:Int) {
         super(maxSize);
-        images = new Array<FlxSprite>();
+
+        bgWidth = width - 1;
+        moveScale = scale;
+
         var bgnight:FlxSprite = new FlxSprite();
-        bgnight.loadGraphic(AssetPaths.bg_night_clear__png, true, 1280, 724);
+        bgnight.loadGraphic(image, true, width, height);
         add(bgnight);
-        images.push(bgnight);
+
         activebg = bgnight;
 
         bgnight = new FlxSprite();
-        bgnight.loadGraphic(AssetPaths.bg_night_clear__png, true, 1280, 724);
+        bgnight.loadGraphic(image, true, width, height);
         add(bgnight);
-        images.push(bgnight);
-        bgnight.x = 1280;
+
         secondarybg = bgnight;
+
+        bgnight.x = bgWidth;
     }
 
     override public function update():Void {
+        
+        var dx:Float = lastX - FlxG.camera.target.x;
 
-        var dx:Float =activebg.x - FlxG.camera.target.x  + bgWidth * 0.5;
+
+        activebg.x -= (1.0 - moveScale) * dx;
+
+        lastX = FlxG.camera.target.x;
+
+        dx = activebg.x - FlxG.camera.target.x + bgWidth * 0.5;
 
         if(dx < 0){
             secondarybg.x = activebg.x + bgWidth;
@@ -42,6 +56,5 @@ class Background extends FlxGroup {
             secondarybg = activebg;
             activebg = d;
         }
-
     }
 }

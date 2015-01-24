@@ -21,13 +21,16 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
+    
     // var physics:Physics;
     var text:FlxText;
 
-    var bg:Background;
+    var layers:LayerManager;
     var player:Player;
     var npc:NPC;
     var timer:FlxTimer;
+
+    var placeManager:Map<String, Place>;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -37,12 +40,12 @@ class PlayState extends FlxState
 		super.create();
 
         canvas = new FlxSprite();
-        snowSystem = new SnowSystem();
+        snowSystem = new SnowSystem(0, 200);
         
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
-        bg = new Background();
-        add(bg);
+        layers = new LayerManager();
+        add(layers);
 
         // text = new FlxText(150, 300, 200, "Test");
         // text.color = 0xFFFF66;
@@ -50,13 +53,18 @@ class PlayState extends FlxState
 
         player = new Player(81,340);
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
-        add(player);
-        add(canvas);
+        
+
+        layers.getForegroundLayer().add(player);
+        layers.getForegroundLayer().add(canvas);
+
+        FlxG.camera.fade(FlxColor.BLACK, .33, true);
 
         npc = new NPC(150,360);
-        add(npc);
+        layers.getForegroundLayer().add(npc);
 
-        //add(canvas);
+        placeManager = new Map<String, Place>();
+        placeManager.set("01_darkness", new Place(0, 1));
 	}
 	
 	/**
@@ -73,12 +81,28 @@ class PlayState extends FlxState
 	 */
 	override public function update():Void
 	{
+        canvas.x = FlxG.camera.target.x - FlxG.width * 0.5;
         canvas.fill(FlxColor.TRANSPARENT);
+
+        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
 
         for(flake in snowSystem.getSnowflakes())
         {
-            canvas.drawCircle(flake.x, flake.y, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
+            canvas.drawCircle(flake.x - canvas.x, flake.y, 3, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x, flake.y, 1.5, 0xCCEDFEFF);
+        }
+
+        for(place in placeManager)
+        {
+            if(!place.inactivated)
+            {
+                if((player.x >= place.xPosition) && 
+                   (player.x <= place.xPosition + place.width))
+                {
+                    // do shit here
+                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
+                }
+            }
         }
 
         if (Math.abs(npc.x - player.x) <= 20) {
