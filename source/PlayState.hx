@@ -45,6 +45,8 @@ class PlayState extends FlxState
         add(player);
         add(canvas);
 
+        FlxG.camera.fade(FlxColor.BLACK, .33, true);
+
 	}
 	
 	/**
