@@ -2,14 +2,16 @@ package;
 
 class Place
 {
-    xPosition:Float;
-    width:Float;
-    title:String;
+    public var inactivated:Bool;
+    private var scaleMultiplier:Float;
+    public var xPosition:Float;
+    public var width:Float;
 
-    public function new(pos:Float, w:Float, t:String)
+    public function new(pos:Float, w:Float)
     {
-        xPosition = pos;
-        width = w;
-        title = t;
+        inactivated = false;
+        scaleMultiplier = 1;
+        xPosition = pos * scaleMultiplier;
+        width = w * scaleMultiplier;
     }
 }
