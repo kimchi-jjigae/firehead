@@ -39,7 +39,7 @@ class Player extends FlxSprite
         _left = FlxG.keys.anyPressed(["LEFT", "A"]);
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
-        animation.play("lr");
+        // animation.play("lr");
 
         if (_up && _down) 
             _up = _down = false;
@@ -78,11 +78,11 @@ class Player extends FlxSprite
             if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) {
                 switch(facing) {
                     case FlxObject.LEFT, FlxObject.RIGHT:
-                        animation.play("lr");
+                        // animation.play("lr");
                     case FlxObject.UP:
-                        animation.play("u");
+                        // animation.play("u");
                     case FlxObject.DOWN:
-                        animation.play("d");
+                        // animation.play("d");
                 }
             }
         }
