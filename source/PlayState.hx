@@ -11,13 +11,18 @@ import flixel.util.FlxColor;
 
 using flixel.util.FlxSpriteUtil;
 
+import flixel.FlxCamera;
+
 /**
  * A FlxState which can be used for the actual gameplay.
  */
 class PlayState extends FlxState
 {
-    private var snowSystem:SnowSystem;
-    private var physics:Physics;
+    var snowSystem:SnowSystem;
+    var physics:Physics;
+
+    var bg:Background;
+    var player:Player;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -36,6 +41,14 @@ class PlayState extends FlxState
         {
            canvas.drawCircle(flake.x, flake.y, 5, FlxColor.BLUE);
         }
+
+        bg = new Background();
+        add(bg);
+
+        player = new Player();
+        FlxG.camera.follow(player, FlxCamera.STYLE_TOPDOWN, 1);
+        add(player);
+
 	}
 	
 	/**

@@ -20,10 +20,16 @@ class MenuState extends FlxState
 	 */
 	override public function create():Void
 	{
-        text = new FlxText(0, 0, 100, "Hello World!");
+        text = new FlxText(0, 0, 200, "Press Something to Play I Guess");
+       
+        text.x = (FlxG.stage.stageWidth - text.width) * 0.5;
+        text.alignment = "center";
         text.size = 20;
 		super.create();
         add(text);
+
+
+        
 	}
 	
 	/**

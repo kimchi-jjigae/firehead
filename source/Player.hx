@@ -23,7 +23,9 @@ class Player extends FlxSprite
         animation.add("u", [6, 7, 6, 8], 6, false);
         animation.add("d", [0, 1, 0, 2], 6, false);
         drag.x = drag.y = 1600;
-        }
+        acceleration.y = 0;
+        y = 360;
+    }
 
     private function movement():Void {
         var _up:Bool = false;
@@ -31,8 +33,8 @@ class Player extends FlxSprite
         var _left:Bool = false;
         var _right:Bool = false;
 
-        _up = FlxG.keys.anyPressed(["UP", "W"]);
-        _down = FlxG.keys.anyPressed(["DOWN", "S"]);
+       // _up = FlxG.keys.anyPressed(["UP", "W"]);
+       // _down = FlxG.keys.anyPressed(["DOWN", "S"]);
         _left = FlxG.keys.anyPressed(["LEFT", "A"]);
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
@@ -98,5 +100,5 @@ class Player extends FlxSprite
     {
         movement();
         super.update();
-        }
+    }
 }
