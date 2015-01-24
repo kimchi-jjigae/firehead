@@ -86,7 +86,21 @@ class Player extends FlxSprite
                 }
             }
         }
+
+        var bounciness:Float = 4;
+        goalY = 340 
+            + Math.sin(bajs += 0.1) * 
+            (bounciness - Math.min(Math.abs(velocity.x/100), 1) * bounciness);
+
+        y += (goalY - y) * 0.05;
+
+        if(x < -100){
+            x = -100;
+        }
     }
+
+    private var goalY:Float = 340;
+    private var bajs:Float = 0;
 
     public function grow(amount:Float = 1.0):Void {
 

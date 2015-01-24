@@ -20,6 +20,8 @@ class IntroState extends FlxState
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
+
+    private var readTime:Float = 0.3;
 	override public function create():Void
 	{
         text = new FlxText(0, 20, 400, "In The Beginning There was a ton of light and stuff in a galaxy far away or something. How cool isn't that?");
@@ -30,14 +32,14 @@ class IntroState extends FlxState
         text.y = (FlxG.stage.stageHeight - text.height) * 0.5;
         text.alpha = 0;
 
-        FlxTween.tween(text, { alpha:1.0 }, 2.0, {complete:fadeOutThingy});
+        FlxTween.tween(text, { alpha:1.0 }, readTime, {complete:fadeOutThingy});
 
 		super.create();
         add(text);
 	}
 	
     private function fadeOutThingy(tween:FlxTween):Void {
-        FlxTween.tween(text, { alpha:0.0 }, 2.0, {complete:goToGame});
+        FlxTween.tween(text, { alpha:0.0 }, readTime, {complete:goToGame});
     }
 
     private function goToGame(tween:FlxTween):Void {
