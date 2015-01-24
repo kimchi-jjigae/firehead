@@ -8,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -20,11 +21,13 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
-    var physics:Physics;
+    // var physics:Physics;
+    var text:FlxText;
 
     var bg:Background;
     var player:Player;
     var npc:NPC;
+    var timer:FlxTimer;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -41,7 +44,11 @@ class PlayState extends FlxState
         bg = new Background();
         add(bg);
 
-        player = new Player();
+        // text = new FlxText(150, 300, 200, "Test");
+        // text.color = 0xFFFF66;
+        // add(text);
+
+        player = new Player(81,340);
         FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
         add(player);
         add(canvas);
@@ -74,7 +81,36 @@ class PlayState extends FlxState
             canvas.drawCircle(flake.x, flake.y, 1.5, 0xCCEDFEFF);
         }
 
+        if (Math.abs(npc.x - player.x) <= 20) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+        }
+        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
+            // text.destroy();
+            // trace("Test");
+        }
+
+        if(FlxG.keys.justPressed.ENTER) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+            new FlxTimer(5, destroyText, 1);
+            // timer.start();
+            // text.destroy();
+        }
+
         snowSystem.update();
 		super.update();
 	}	
+
+    private function changeText(Timer:FlxTimer):Void {
+        text = new FlxText(150, 300, 200, "I'm new!");
+        text.color = 0xFFFF66;
+        add(text);
+    }
+
+    private function destroyText(Timer:FlxTimer):Void {
+        text.destroy();
+    }
 }
