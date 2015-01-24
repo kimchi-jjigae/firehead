@@ -22,12 +22,12 @@ class PlayState extends FlxState
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
     
-    // var physics:Physics;
     var text:FlxText;
 
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
+    var campfire:Object;
     var timer:FlxTimer;
 
     var placeManager:Map<String, Place>;
@@ -63,6 +63,9 @@ class PlayState extends FlxState
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
 
+        campfire = new Object(150, 360, "campfire.png", 20, 20);
+        layers.getForegroundLayer().add(campfire);
+
         placeManager = new Map<String, Place>();
         // FlxG.sound.playMusic("music_1");
         placeManager.set("01_darkness", new Place(0, 100));
@@ -92,8 +95,8 @@ class PlayState extends FlxState
 
         for(flake in snowSystem.getSnowflakes())
         {
-            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.5, 0xCCEDFEFF);
+            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 1.5, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.0, 0xCCEDFEFF);
         }
 
         var placeIter = placeManager.keys();
