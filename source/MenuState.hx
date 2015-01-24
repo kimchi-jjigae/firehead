@@ -12,14 +12,16 @@ import flixel.util.FlxMath;
  */
 class MenuState extends FlxState
 {
+
+    var text:FlxText = new FlxText(0, 0, 100, "Hello World!");
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
 		super.create();
-        var text:FlxText = new FlxText(0, 0, 100, "Hello World!");
-        text.size = 50;
+        text.size = 30;
         add(text);
 	}
 	
