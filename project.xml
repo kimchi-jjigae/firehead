@@ -30,6 +30,9 @@
 	<set name="BUILD_DIR" value="export" />
 	<classpath name="source" />
 	<assets path="assets" />
+	<!-- <assets path="assets">
+    <music path="Firehead_ambient.mp3" id="music_1" />
+	</assets> -->
 	
 	<!--------------------------------LIBRARIES------------------------------------->
 
