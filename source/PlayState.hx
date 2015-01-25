@@ -3,6 +3,7 @@
 
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxSpriteUtil;
@@ -195,8 +196,8 @@ class PlayState extends FlxState
 
         ashHeap = new Thing(1500, 350, "ash.png", 60, 36);
         ashHeap2 = new Thing(3000, 350, "ash.png", 60, 36);
-        layers.getForegroundLayer().add(ashHeap);
-        layers.getForegroundLayer().add(ashHeap2);
+        layers.getItemLayer().add(ashHeap);
+        layers.getItemLayer().add(ashHeap2);
 
         torch = new Torch();
         add(torch);
@@ -207,7 +208,7 @@ class PlayState extends FlxState
         if(!windy)
             snowSystem.setWindSpeed(player.velocity.x * 0.0001);
         else
-            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.0, 0.035));
+            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.012, 0.025));
 
         for(flake in snowSystem.getSnowflakes())
         {
@@ -283,11 +284,6 @@ class PlayState extends FlxState
             windy = true;
         }));
 
-        // turn into day
-        registerPlace(new Place(6000, 10, function() {
-            turnIntoDay();
-        }));
-
         // npc gets scared and jumps away!
         registerPlace(new Place(npcList[0].x - 100, 10, function() {
             player.enableControls(false);
@@ -316,6 +312,12 @@ class PlayState extends FlxState
                 });
             });
 
+        }));
+
+        // turn into day
+        registerPlace(new Place(2000, 10, function() {
+            turnIntoDay();
+            FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
         }));
 
 /*
@@ -357,8 +359,14 @@ class PlayState extends FlxState
     //     text.destroy();
     // }
 
+    private function endGame(twn:FlxTween):Void {
+        FlxG.camera.fade(FlxColor.BLACK, 2, false,function() {
+            FlxG.switchState(new EndState());
+        });
+    }
     private function shrinkFlame(Timer:FlxTimer):Void {
         player.scale.x = 0.5;
         player.scale.y = 0.5;
     }
+    private var lol:Float = 0;
 }
