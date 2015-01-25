@@ -36,8 +36,8 @@ class Torch extends FlxSpriteGroup
         torchPart.offset.x = 256;
         torchPart.offset.y = 256;
 
-        torchPart.scale.x = 0.7;
-        torchPart.scale.y = 0.7;
+        setScale(0.2);
+        torchPart.alpha = 0.4;
 
         torchPart.blend = BlendMode.SCREEN;
 
@@ -61,10 +61,16 @@ class Torch extends FlxSpriteGroup
         lightY = y;
     }
 
+    var torchScale:Float = 0.3;
+
+    public function setScale(scale:Float):Void {
+        torchScale = scale;
+    }
+
     private var bajs:Float = 0;
     override public function update():Void {
         bajs += 0.01;
-        torchPart.scale.x = torchPart.scale.y = (Math.sin(bajs) * 0.5 + 1.0)*0.2 + 0.4; 
+        torchPart.scale.x = torchPart.scale.y = (Math.sin(bajs) * 0.5 + 1.0)*0.2 + torchScale; 
 
         torchPart.x = lightX; //FlxG.camera.target.x;
         torchPart.y = lightY; //FlxG.camera.target.y;
