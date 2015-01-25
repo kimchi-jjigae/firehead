@@ -27,14 +27,12 @@ class PlayState extends FlxState
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
-    var campfire:Object;
+    var bonfire:Thing;
 
     // var legs:Legs;
     var timer:FlxTimer;
 
     var torch:Torch;
-
-    var placeManager:Map<String, Place>;
 
     var placeList:Array<Place>;
 
@@ -82,49 +80,6 @@ class PlayState extends FlxState
         if(FlxG.keys.anyPressed(["M"])){
             layers.day();
         }
-
-        /*
-        var placeIter = placeManager.keys();
-        for(key in placeIter)
-        {
-            var place = placeManager.get(key);
-            if(!place.inactivated)
-            {
-                if((player.x >= place.xPosition) && 
-                   (player.x <= place.xPosition + place.width))
-                {
-                    runPlaceFunction(key);
-                }
-                else
-                {
-                    // do shit here
-                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
-                }
-            }
-            else
-            {
-            }
-        }
-        */
-
-        if (Math.abs(npc.x - player.x) <= 20) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-        }
-        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
-            // text.destroy();
-            // trace("Test");
-        }
-
-        if(FlxG.keys.justPressed.ENTER) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-            new FlxTimer(5, destroyText, 1);
-            // timer.start();
-            // text.destroy();
-        }
         
         snowUpdate();
 
@@ -160,14 +115,8 @@ class PlayState extends FlxState
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
 
-        /*
-        campfire = new Object(150, 360, "campfire.png", 20, 20);
-        layers.getForegroundLayer().add(campfire);
-        */
-
-        placeManager = new Map<String, Place>();
-        placeManager.set("01_darkness", new Place(0, 100));
-        placeManager.set("02_introtext", new Place(200, 100));
+        bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
+        layers.getForegroundLayer().add(bonfire);
 
         torch = new Torch();
         add(torch);
@@ -205,35 +154,35 @@ class PlayState extends FlxState
         }
     }
 
-    /////////////////
-    ///Check Here!///
-    /////////////////
+            /* sorry just keeping this here for reference
+            if(FlxG.keys.justPressed.ENTER) {
+                text = new FlxText(150, 300, 200, "Test");
+                text.color = 0xFFFF66;
+                add(text);
+                new FlxTimer(5, destroyText, 1);
+                // timer.start();
+                // text.destroy();
+            }
+            */
+
     public function registerPlaces():Void {
 
-        registerPlace(new Place(200, 10, function() {
-            trace("Ayy yo");
+        // initial text?
+        registerPlace(new Place(500, 10, function() {
+            text = new FlxText(500, 300, 200, "hej!");
+                text.color = 0xFFFF66;
+                add(text);
         }));
 
         registerPlace(new Place(400, 10, function() {
-            player.grow();
+            //player.grow();
         }));
 
-        registerPlace(new Place(600, 10, function() {
+        // bonfire at 2000
+        registerPlace(new Place(2000, 10, function() {
             player.grow(50);
         }));
         
-    }
-
-    public function runPlaceFunction(place:String)
-    {
-        if(place == "01_darkness")
-        {
-            //trace("you're in darkness\n");
-        }
-        else if(place == "02_introtext")
-        {
-            //trace("you're reading text\n");
-        }
     }
 
     private function changeText(Timer:FlxTimer):Void {
