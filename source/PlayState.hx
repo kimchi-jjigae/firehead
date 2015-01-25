@@ -13,6 +13,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxMath;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import flixel.util.FlxRandom;
 
 using flixel.util.FlxSpriteUtil;
 
@@ -25,6 +26,8 @@ class PlayState extends FlxState
 {
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
+    var snowing:Bool;
+    var windy:Bool;
     
     var text:FlxText;
 
@@ -34,6 +37,7 @@ class PlayState extends FlxState
     var ageSequence:Ages;
     var bonfire:Thing;
     var ashHeap:Thing;
+    var ashHeap2:Thing;
     var placeManager:Map<String, Place>;
 
 
@@ -62,10 +66,6 @@ class PlayState extends FlxState
 
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
-
-
-        npc = new NPC(150,360);
-        layers.getForegroundLayer().add(npc);
 
         // ageSequence = new Ages(140, 340);
         // layers.getForegroundLayer().add(ageSequence);
@@ -144,7 +144,8 @@ class PlayState extends FlxState
 
         torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
         
-        snowUpdate();
+        if(snowing)
+            snowUpdate();
 
         placeUpdate();
 
@@ -153,6 +154,7 @@ class PlayState extends FlxState
 
     private function snowSetup()
     {
+        snowing = false;
         canvas = new FlxSprite();
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
@@ -180,14 +182,16 @@ class PlayState extends FlxState
         npcList.push(new NPC(1000, 360));
         for(npc in npcList)
         {
-            layers.getForegroundLayer().add(npc);
+            //layers.getForegroundLayer().add(npc);
         }
 
         bonfire = new Thing(2000, 320, "bonfire.png", 66, 52, true);
-        layers.getForegroundLayer().add(bonfire);
+        //layers.getForegroundLayer().add(bonfire);
 
-        ashHeap = new Thing(500, 350, "ash.png", 60, 36);
+        ashHeap = new Thing(1500, 350, "ash.png", 60, 36);
+        ashHeap2 = new Thing(3000, 350, "ash.png", 60, 36);
         layers.getForegroundLayer().add(ashHeap);
+        layers.getForegroundLayer().add(ashHeap2);
 
         torch = new Torch();
         add(torch);
@@ -195,7 +199,10 @@ class PlayState extends FlxState
 
     private function snowUpdate()
     {
-        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+        if(!windy)
+            snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+        else
+            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.0, 0.035));
 
         for(flake in snowSystem.getSnowflakes())
         {
@@ -248,21 +255,35 @@ class PlayState extends FlxState
 
     public function registerPlaces():Void { // keep these are in order!!
 
-        // initial text?
-        registerPlace(new Place(500, 10, function() {
-            text = new FlxText(player.x + 10, player.y - 20, 200, "?");
+        //////////////////
+        // START PLACES //
+        //////////////////
+
+        // ash pile
+        registerPlace(new Place(1500, 10, function() {
+            text = new FlxText(1500 + 30, 300, 200, "?");
                 text.color = 0xFFFF66;
                 add(text);
         }));
 
-        registerPlace(new Place(600, 10, function() {
-            torch.setPos(600, 300);
+        /////////////////
+        // SNOWY SCENE //
+        /////////////////
+
+        registerPlace(new Place(2400, 10, function() {
+            snowing = true;
         }));
 
-        registerPlace(new Place(700, 10, function() {
-            //torch.setPos(800, 300);
+        registerPlace(new Place(3200, 10, function() {
+            windy = true;
         }));
 
+        // turn into day
+        registerPlace(new Place(6000, 10, function() {
+            turnIntoDay();
+        }));
+
+/*
         // bonfire - starting to get small
         registerPlace(new Place(1400, 10, function() {
             player.scale.set(0.8, 0.8);
@@ -284,8 +305,8 @@ class PlayState extends FlxState
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
             trace("hej\n");
-            turnIntoDay();
         }));
+        */
         
     }
 
