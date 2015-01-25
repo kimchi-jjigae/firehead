@@ -65,6 +65,19 @@ class PlayState extends FlxState
 		super.destroy();
 	}
 
+
+    public function turnIntoDay():Void {
+        layers.day();
+        torch.turnIntoDay();
+        layers.makeMountainsHappy();
+    }
+
+    public function turnIntoNight():Void {
+        layers.night();
+        torch.turnIntoNight();
+        layers.makeMountainsSad();
+    }
+
 	/**
 	 * Function that is called once every frame.
 	 */
@@ -74,15 +87,30 @@ class PlayState extends FlxState
         canvas.fill(FlxColor.TRANSPARENT);
 
         if(FlxG.keys.anyPressed(["N"])){
-            layers.night();
-            torch.turnIntoNight();
-            layers.makeMountainsSad();
+            turnIntoNight();
         }
 
         if(FlxG.keys.anyPressed(["M"])){
-            layers.day();
-            torch.turnIntoDay();
-            layers.makeMountainsHappy();
+            turnIntoDay();
+        }
+
+        if (Math.abs(npc.x - player.x) <= 20) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+        }
+        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
+            // text.destroy();
+            // trace("Test");
+        }
+
+        if(FlxG.keys.justPressed.ENTER) {
+            text = new FlxText(150, 300, 200, "Test");
+            text.color = 0xFFFF66;
+            add(text);
+            new FlxTimer(5, destroyText, 1);
+            // timer.start();
+            // text.destroy();
         }
 
         torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
@@ -185,17 +213,10 @@ class PlayState extends FlxState
             //player.grow();
         }));
 
-        registerPlace(new Place(600, 10, function() {
-            torch.setPos(600, 300);
-        }));
-
-        registerPlace(new Place(700, 10, function() {
-            torch.setPos(800, 300);
-        }));
-
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
             player.grow(50);
+            turnIntoDay();
         }));
         
     }
