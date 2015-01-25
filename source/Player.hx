@@ -78,7 +78,7 @@ class Player extends FlxSprite
             if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) {
                 switch(facing) {
                     case FlxObject.LEFT, FlxObject.RIGHT:
-                        // animation.play("lr");
+                         animation.play("lr");
                     case FlxObject.UP:
                         // animation.play("u");
                     case FlxObject.DOWN:
