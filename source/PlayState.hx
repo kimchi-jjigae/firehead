@@ -390,6 +390,7 @@ class PlayState extends FlxState
     // }
 
     private function endGame(twn:FlxTween):Void {
+        player.setPowerScale(2);
         FlxG.camera.fade(FlxColor.BLACK, 2, false,function() {
             FlxG.switchState(new EndState());
         });
