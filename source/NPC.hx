@@ -26,4 +26,8 @@ class NPC extends FlxSprite {
 
         super.update();
     }
+
+    public function jumpScaredly(times:Int, callback:Void->Void):Void {
+
+    }
 }

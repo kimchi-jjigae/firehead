@@ -11,7 +11,9 @@ class LayerManager extends FlxGroup {
 
 
     var time:Float = 0;
+    public var  itemLayer:FlxSpriteGroup;
     private var foreground:FlxSpriteGroup;
+    private var frontMountains:FlxSpriteGroup;
 
     public function new(maxSize:Int = 2)
     {
@@ -22,15 +24,17 @@ class LayerManager extends FlxGroup {
         addLayer(AssetPaths.mountains__png, 1280, 724, 0.4);
         addLayer(AssetPaths.bg_texture_snow__png, 1280, 724, 1.0);
 
+        itemLayer = new FlxSpriteGroup();
+        add(itemLayer);
+        layers.push(itemLayer);
 
         foreground = new FlxSpriteGroup();
-
         add(foreground);
         layers.push(foreground);
 
         addLayer(AssetPaths.fogfront__png, 1280, 724, 1.1);
 
-        addLayer(AssetPaths.coolface__png, 1280, 724, 1.75);
+        frontMountains = addLayer(AssetPaths.coolface__png, 1280, 724, 1.75);
         night();
     }
 
@@ -50,11 +54,11 @@ class LayerManager extends FlxGroup {
     }
 
     public function makeMountainsHappy():Void {
-        FlxTween.tween(layers[6], { y:200, alpha:0.5 }, 1.0);
+        FlxTween.tween(frontMountains, { y:200, alpha:0.5 }, 1.0);
     }
 
     public function makeMountainsSad():Void {
-        FlxTween.tween(layers[6], { y:0, alpha:1.0 }, 1.0);
+        FlxTween.tween(frontMountains, { y:0, alpha:1.0 }, 1.0);
     }
 
     public function night():Void {
@@ -69,12 +73,17 @@ class LayerManager extends FlxGroup {
         return foreground;
     }
 
-    private function addLayer(name:String, width:Int, height:Int, scale:Float){
+    public function getItemLayer():FlxSpriteGroup {
+        return itemLayer;
+    }
+
+    private function addLayer(name:String, width:Int, height:Int, scale:Float):BackgroundLayer{
         var bg:BackgroundLayer = new BackgroundLayer(5, scale, name,
                 width, height);
         add(bg);
 
         layers.push(bg);
+        return bg;
     }
 
     override public function update():Void {

@@ -30,7 +30,6 @@ class PlayState extends FlxState
 
     var layers:LayerManager;
     var player:Player;
-    var npc:NPC;
     var ageSequence:Ages;
     var bonfire:Thing;
     var ashHeap:Thing;
@@ -63,9 +62,6 @@ class PlayState extends FlxState
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
 
-
-        npc = new NPC(150,360);
-        layers.getForegroundLayer().add(npc);
 
         // ageSequence = new Ages(140, 340);
         // layers.getForegroundLayer().add(ageSequence);
@@ -175,19 +171,19 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        npcList.push(new NPC(150, 360));
-        npcList.push(new NPC(2500, 360));
-        npcList.push(new NPC(1000, 360));
+        npcList.push(new NPC(150, 450));
+        npcList.push(new NPC(2500, 450));
+        npcList.push(new NPC(1000, 450));
         for(npc in npcList)
         {
-            layers.getForegroundLayer().add(npc);
+            layers.getItemLayer().add(npc);
         }
 
-        bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
-        layers.getForegroundLayer().add(bonfire);
+        bonfire = new Thing(2000, 330, "bonfire.png", 66, 52, true);
+        layers.getItemLayer().add(bonfire);
 
         ashHeap = new Thing(500, 350, "ash.png", 60, 36);
-        layers.getForegroundLayer().add(ashHeap);
+        layers.getItemLayer().add(ashHeap);
 
         torch = new Torch();
         add(torch);
@@ -246,7 +242,7 @@ class PlayState extends FlxState
             }
             */
 
-    public function registerPlaces():Void { // make sure these are in order!
+    public function registerPlaces():Void { // keep these are in order!!
 
         // initial text?
         registerPlace(new Place(500, 10, function() {
@@ -255,40 +251,28 @@ class PlayState extends FlxState
                 add(text);
         }));
 
-        registerPlace(new Place(400, 10, function() {
-            //player.grow();
-        }));
-
-        registerPlace(new Place(600, 10, function() {
-            torch.setPos(600, 300);
-        }));
-
-        registerPlace(new Place(700, 10, function() {
-            //torch.setPos(800, 300);
-        }));
-
         // bonfire - starting to get small
         registerPlace(new Place(1400, 10, function() {
-            player.scale.set(0.8, 0.8);
+            player.setPowerScale(0.8);
             //torch.scale.set(0.8, 0.8);
         }));
 
         // bonfire - getting smaller
         registerPlace(new Place(1600, 10, function() {
-            player.scale.set(0.5, 0.5);
+            player.setPowerScale(0.5);
             //torch.scale.set(0.5, 0.5);
         }));
 
         // bonfire - dying!
         registerPlace(new Place(1800, 10, function() {
-            player.scale.set(0.3, 0.3);
+            player.setPowerScale(0.3);
             //torch.scale.set(0.3, 0.3);
         }));
 
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
-            trace("hej\n");
-            turnIntoDay();
+            player.setPowerScale(1.2);
+            //turnIntoDay();
         }));
         
     }

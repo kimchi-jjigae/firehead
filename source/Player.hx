@@ -23,7 +23,7 @@ class Player extends FlxSprite
         loadGraphic(AssetPaths.flame_animation__png, true, 82, 54);
         setFacingFlip(FlxObject.LEFT, false, false);
         setFacingFlip(FlxObject.RIGHT, true, false);
-        animation.add("default", [1, 2, 3, 4], 10, false);
+        animation.add("default", [1, 2, 3, 4], 5, false);
         animation.add("lr", [5, 6, 7, 8, 9, 10, 11, 12], 10, true);
         // We don't have movement up and down
         // animation.add("u", [6, 7, 6, 8], 6, false);
@@ -37,16 +37,24 @@ class Player extends FlxSprite
 
     }
 
+    private var controlsEnabled:Bool = true;
+
+    public function enableControls(enable:Bool = true):Void {
+        controlsEnabled = enable;
+    }
+
     private function movement():Void {
         var _up:Bool = false;
         var _down:Bool = false;
         var _left:Bool = false;
         var _right:Bool = false;
 
-        _up = FlxG.keys.anyPressed(["UP", "W"]);
-        //_down = FlxG.keys.anyPressed(["DOWN", "S"]);
-        _left = FlxG.keys.anyPressed(["LEFT", "A"]);
-        _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+        if(controlsEnabled) {
+            _up = FlxG.keys.anyPressed(["UP", "W"]);
+            //_down = FlxG.keys.anyPressed(["DOWN", "S"]);
+            _left = FlxG.keys.anyPressed(["LEFT", "A"]);
+            _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
+        }
 
         // Static animation BECAUSE WE CAN
         animation.play("default");
@@ -83,7 +91,7 @@ class Player extends FlxSprite
                 facing = FlxObject.RIGHT;
             }
 
-            FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity);
+            FlxAngle.rotatePoint(speed * Math.min(powerScale, 1.0), 0, 0, 0, mA, velocity);
 
             if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) {
                 switch(facing) {
@@ -107,6 +115,13 @@ class Player extends FlxSprite
         if(x < -200){
             x = -200;
         }
+    }
+
+    private var powerScale = 1.0;
+    //Powerscale ranges between 0 and 1. scales movement speed and ordinary scale.
+    public function setPowerScale(s:Float):Void {
+        FlxTween.tween(this, { powerScale:s } , 0.5);
+        FlxTween.tween(scale, { x:s, y:s } , 0.5);
     }
 
     private var goalY:Float = 340;
