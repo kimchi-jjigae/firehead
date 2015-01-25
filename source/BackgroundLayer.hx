@@ -1,8 +1,8 @@
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.group.FlxGroup;
+import flixel.group.FlxSpriteGroup;
 
-class BackgroundLayer extends FlxGroup {
+class BackgroundLayer extends FlxSpriteGroup {
 
     var activebg:FlxSprite;
     var secondarybg:FlxSprite;

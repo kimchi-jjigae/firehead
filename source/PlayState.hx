@@ -77,10 +77,14 @@ class PlayState extends FlxState
 
         if(FlxG.keys.anyPressed(["N"])){
             layers.night();
+            torch.turnIntoNight();
+            layers.makeMountainsSad();
         }
 
         if(FlxG.keys.anyPressed(["M"])){
             layers.day();
+            torch.turnIntoDay();
+            layers.makeMountainsHappy();
         }
 
         /*
@@ -125,6 +129,8 @@ class PlayState extends FlxState
             // timer.start();
             // text.destroy();
         }
+
+        torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
         
         snowUpdate();
 
@@ -182,6 +188,7 @@ class PlayState extends FlxState
             canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 1.5, 0x77A2F1F2);
             canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.0, 0xCCEDFEFF);
         }
+
         snowSystem.update();
     }
 
@@ -219,9 +226,11 @@ class PlayState extends FlxState
         }));
 
         registerPlace(new Place(600, 10, function() {
+            torch.setPos(600, 300);
         }));
 
         registerPlace(new Place(700, 10, function() {
+            torch.setPos(800, 300);
         }));
         
     }

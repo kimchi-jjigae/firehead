@@ -12,7 +12,10 @@ class Torch extends FlxSpriteGroup
 {
     private var darkPart:FlxSprite;
     private var torchPart:FlxSprite;
+    //this stamp has damp so watch out for it 
     private var dampStamp:FlxSprite;
+
+
 
     public function new(max:Int = 2){
         super(max);
@@ -41,13 +44,30 @@ class Torch extends FlxSpriteGroup
         //add(torchPart);
     }
 
-    public function setLightPos(x:Float, y:Float):Void {
-        
+    public function turnIntoDay():Void {
+        FlxTween.tween(this, { alpha:0.01 }, 1);
     }
 
+    public function turnIntoNight():Void {
+        FlxTween.tween(this, { alpha:1.0 }, 1);
+    }
+
+    private var lightX:Float = 0; 
+    private var lightY:Float = 0;
+
+    public function setPos(x:Float, y:Float):Void {
+        //FlxTween.tween(this, { lightX:x, lightY:y }, 5);
+        lightX = x;
+        lightY = y;
+    }
+
+    private var bajs:Float = 0;
     override public function update():Void {
-        torchPart.x = FlxG.camera.target.x;
-        torchPart.y = FlxG.camera.target.y;
+        bajs += 0.01;
+        torchPart.scale.x = torchPart.scale.y = (Math.sin(bajs) * 0.5 + 1.0)*0.2 + 0.4; 
+
+        torchPart.x = lightX; //FlxG.camera.target.x;
+        torchPart.y = lightY; //FlxG.camera.target.y;
 
         var screenXY:FlxPoint = torchPart.getScreenXY();
         darkPart.stamp(dampStamp, 0, 0);
@@ -56,4 +76,5 @@ class Torch extends FlxSpriteGroup
                 Std.int(screenXY.x - torchPart.width / 2),
                 Std.int(screenXY.y - torchPart.height / 2));
     }
+
 }

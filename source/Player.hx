@@ -37,7 +37,7 @@ class Player extends FlxSprite
         var _right:Bool = false;
 
         _up = FlxG.keys.anyPressed(["UP", "W"]);
-        _down = FlxG.keys.anyPressed(["DOWN", "S"]);
+        //_down = FlxG.keys.anyPressed(["DOWN", "S"]);
         _left = FlxG.keys.anyPressed(["LEFT", "A"]);
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
@@ -102,6 +102,7 @@ class Player extends FlxSprite
     }
 
     private var goalY:Float = 340;
+    //BAjs keeps track of time and is very important. don't tell him otherwise (will hurt feelings)
     private var bajs:Float = 0;
 
     public function grow(amount:Float = 1.0):Void {
