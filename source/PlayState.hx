@@ -6,6 +6,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxSpriteUtil;
+import flixel.util.FlxPoint;
 import flixel.FlxState;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
@@ -42,6 +43,7 @@ class PlayState extends FlxState
     var torch:Torch;
 
     var placeList:Array<Place>;
+    var npcList:Array<NPC>;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
@@ -49,6 +51,7 @@ class PlayState extends FlxState
 	override public function create():Void
 	{
         placeList = new Array<Place>();
+        npcList = new Array<NPC>();
 
 		super.create();
 
@@ -169,8 +172,13 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        // npc = new NPC(150, 440);
-        // layers.getForegroundLayer().add(npc);
+        npcList.push(new NPC(150, 360));
+        npcList.push(new NPC(2500, 360));
+        npcList.push(new NPC(1000, 360));
+        for(npc in npcList)
+        {
+            layers.getForegroundLayer().add(npc);
+        }
 
         npc = new NPC(150,450);
         layers.getItemLayer().add(npc);
@@ -198,6 +206,16 @@ class PlayState extends FlxState
         snowSystem.update();
     }
 
+    private function npcUpdate()
+    {
+        for(npc in npcList)
+        {
+            if (Math.abs(npc.x - player.x) <= 20) {
+                npc.runningAway = true;
+            }
+        }
+    }
+
     public function registerPlace(p:Place):Place {
         placeList.push(p);
         placeList.sort(function(a:Place, b:Place) {
@@ -205,7 +223,6 @@ class PlayState extends FlxState
         });
         return p;
     }
-    
 
     public function placeUpdate():Void {
         if(placeList.length > 0){
@@ -242,9 +259,35 @@ class PlayState extends FlxState
             //player.grow();
         }));
 
+        registerPlace(new Place(600, 10, function() {
+            torch.setPos(600, 300);
+        }));
+
+        registerPlace(new Place(700, 10, function() {
+            //torch.setPos(800, 300);
+        }));
+
+        // bonfire - starting to get small
+        registerPlace(new Place(1400, 10, function() {
+            player.scale.set(0.8, 0.8);
+            //torch.scale.set(0.8, 0.8);
+        }));
+
+        // bonfire - getting smaller
+        registerPlace(new Place(1600, 10, function() {
+            player.scale.set(0.5, 0.5);
+            //torch.scale.set(0.5, 0.5);
+        }));
+
+        // bonfire - dying!
+        registerPlace(new Place(1800, 10, function() {
+            player.scale.set(0.3, 0.3);
+            //torch.scale.set(0.3, 0.3);
+        }));
+
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
-            player.grow(50);
+            trace("hej\n");
             turnIntoDay();
         }));
         
