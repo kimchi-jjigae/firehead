@@ -34,7 +34,7 @@ class IntroState extends FlxState
        
         text.alignment = "center";
         text.x = (FlxG.stage.stageWidth - text.width) * 0.5;
-        text.y = (FlxG.stage.stageHeight - text.height) * 0.5;
+        text.y = (FlxG.stage.stageHeight - text.height) * 0.5 - 30;
         text.alpha = 0;
 
         FlxTween.tween(text, { alpha:1.0 }, readTime, {complete:fadeOutThingy});

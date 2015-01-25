@@ -14,4 +14,8 @@ class NPC extends FlxSprite {
 
     override public function update():Void {
     }
+
+    public function jumpScaredly(times:Int, callback:Void->Void):Void {
+
+    }
 }

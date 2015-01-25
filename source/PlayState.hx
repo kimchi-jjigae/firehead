@@ -61,9 +61,6 @@ class PlayState extends FlxState
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
 
 
-        npc = new NPC(150,360);
-        layers.getForegroundLayer().add(npc);
-
         // ageSequence = new Ages(140, 340);
         // layers.getForegroundLayer().add(ageSequence);
 
@@ -175,11 +172,14 @@ class PlayState extends FlxState
         // npc = new NPC(150, 440);
         // layers.getForegroundLayer().add(npc);
 
-        bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
-        layers.getForegroundLayer().add(bonfire);
+        npc = new NPC(150,450);
+        layers.getItemLayer().add(npc);
+
+        bonfire = new Thing(2000, 350, "bonfire.png", 66, 52);
+        layers.getItemLayer().add(bonfire);
 
         ashHeap = new Thing(500, 350, "ash.png", 60, 36);
-        layers.getForegroundLayer().add(ashHeap);
+        layers.getItemLayer().add(ashHeap);
 
         torch = new Torch();
         add(torch);
