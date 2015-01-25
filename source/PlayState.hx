@@ -28,6 +28,7 @@ class PlayState extends FlxState
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
+    var ageSequence:Ages;
     // var legs:Legs;
     var timer:FlxTimer;
 
@@ -71,11 +72,14 @@ class PlayState extends FlxState
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
 
+        ageSequence = new Ages(140, 340);
+        layers.getForegroundLayer().add(ageSequence);
+
         placeManager = new Map<String, Place>();
         placeManager.set("01_darkness", new Place(0, 1));
 
         // FlxG.sound.playMusic("music_1");
-        
+
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
 	}
@@ -135,10 +139,12 @@ class PlayState extends FlxState
             }
         }
 
-        if (Math.abs(npc.x - player.x) <= 20) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
+        if (Math.abs(npc.x - player.x) <= .2) {
+            // text = new FlxText(150, 300, 200, "Test");
+            // text.color = 0xFFFF66;
+            // add(text);
+            // player.scale.x = 0.5;
+            // player.scale.y = 0.5;
         }
         else if (text != null && Math.abs(npc.x - player.x) >= 20) {
             // text.destroy();
@@ -149,7 +155,7 @@ class PlayState extends FlxState
             text = new FlxText(150, 300, 200, "Test");
             text.color = 0xFFFF66;
             add(text);
-            new FlxTimer(5, destroyText, 1);
+            new FlxTimer(2, shrinkFlame, 1);
             // timer.start();
             // text.destroy();
         }
@@ -178,5 +184,10 @@ class PlayState extends FlxState
 
     private function destroyText(Timer:FlxTimer):Void {
         text.destroy();
+    }
+
+    private function shrinkFlame(Timer:FlxTimer):Void {
+        player.scale.x = 0.5;
+        player.scale.y = 0.5;
     }
 }
