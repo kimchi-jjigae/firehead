@@ -47,7 +47,7 @@ class SnowSystem
 
             if(flake.y > 375 || 
                 Math.abs(flake.x - FlxG.camera.target.x) > FlxG.width * 0.6) {
-                flake.y = 50 + Math.random() * 50;
+                flake.y = 100 - Math.random() * 500;
                 flake.x = FlxG.camera.target.x + FlxRandom.floatRanged(-FlxG.width, FlxG.width);
             }
         }

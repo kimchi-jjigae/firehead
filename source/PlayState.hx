@@ -3,6 +3,7 @@
 
 package;
 
+import flixel.tweens.FlxTween;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.util.FlxSpriteUtil;
@@ -186,13 +187,13 @@ class PlayState extends FlxState
         npcList.push(new NPC(4500, 450));
         npcList.push(new NPC(4600, 450));
 
-        bonfire = new Thing(3500, 340, "bonfire.png", 66, 52, true);
+        bonfire = new Thing(4200, 340, "bonfire.png", 66, 52, true);
         layers.getForegroundLayer().add(bonfire);
 
         ashHeap = new Thing(1500, 350, "ash.png", 60, 36);
         ashHeap2 = new Thing(3000, 350, "ash.png", 60, 36);
-        layers.getForegroundLayer().add(ashHeap);
-        layers.getForegroundLayer().add(ashHeap2);
+        layers.getItemLayer().add(ashHeap);
+        layers.getItemLayer().add(ashHeap2);
 
         for(npc in npcList){
             layers.getItemLayer().add(npc);
@@ -207,7 +208,7 @@ class PlayState extends FlxState
         if(!windy)
             snowSystem.setWindSpeed(player.velocity.x * 0.0001);
         else
-            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.0, 0.035));
+            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.012, 0.035));
 
         for(flake in snowSystem.getSnowflakes())
         {
@@ -281,26 +282,34 @@ class PlayState extends FlxState
 
         registerPlace(new Place(3200, 10, function() {
             windy = true;
-            player.setPowerScale(0.2);
+            player.setPowerScale(0.6);
         }));
 
-        registerPlace(new Place(3250, 10, function() {
+        registerPlace(new Place(3500, 10, function() {
             windy = true;
-            player.setPowerScale(0.15);
+            player.setPowerScale(0.4);
         }));
 
-        registerPlace(new Place(3260, 10, function() {
+        registerPlace(new Place(3600, 10, function() {
+            player.setPowerScale(0.25);
+        }));
+
+        registerPlace(new Place(3700, 10, function() {
             player.setPowerScale(0.2);
+        }));
+
+        registerPlace(new Place(3900, 10, function() {
+            player.setPowerScale(0.4);
         }));
 
         // bonfire
-        registerPlace(new Place(3400, 10, function() {
+        registerPlace(new Place(4000, 10, function() {
             player.setPowerScale(1.0);
             windy = false;
         }));
 
         // turn into day
-        registerPlace(new Place(5000, 10, function() {
+        registerPlace(new Place(6000, 10, function() {
             turnIntoDay();
         }));
 
@@ -340,7 +349,6 @@ class PlayState extends FlxState
             npcList[3].jumpScaredly(1, function(){
                 //After npc has jumped, make it run away.
                 npcList[3].runAway(function(){});
-
                 npcList[4].jumpScaredly(2, function(){
                     //After npc has jumped, make it run away.
                     npcList[4].runAway(function(){
@@ -350,6 +358,13 @@ class PlayState extends FlxState
             });
 
         }));
+
+        // end game
+        registerPlace(new Place(7000, 10, function() {
+            turnIntoDay();
+            FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
+        }));
+
         
     }
 
@@ -363,8 +378,14 @@ class PlayState extends FlxState
     //     text.destroy();
     // }
 
+    private function endGame(twn:FlxTween):Void {
+        FlxG.camera.fade(FlxColor.BLACK, 2, false,function() {
+            FlxG.switchState(new EndState());
+        });
+    }
     private function shrinkFlame(Timer:FlxTimer):Void {
         player.scale.x = 0.5;
         player.scale.y = 0.5;
     }
+    private var lol:Float = 0;
 }
