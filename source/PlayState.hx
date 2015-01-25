@@ -141,12 +141,12 @@ class PlayState extends FlxState
 
         // legs = new Legs(90,370);
 
-        player = new Player(81,340);
+        player = new Player(-200, 340);
         layers.getForegroundLayer().add(player);
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        npc = new NPC(150,360);
+        npc = new NPC(150, 440);
         layers.getForegroundLayer().add(npc);
 
         bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);

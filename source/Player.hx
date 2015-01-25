@@ -96,8 +96,8 @@ class Player extends FlxSprite
 
         y += (goalY - y) * 0.05;
 
-        if(x < -100){
-            x = -100;
+        if(x < -200){
+            x = -200;
         }
     }
 

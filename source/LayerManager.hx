@@ -50,11 +50,11 @@ class LayerManager extends FlxGroup {
     }
 
     public function makeMountainsHappy():Void {
-        FlxTween.tween(layers[6], { y:200, alpha:0.5 }, 1.6);
+        FlxTween.tween(layers[6], { y:200, alpha:0.5 }, 1.0);
     }
 
     public function makeMountainsSad():Void {
-        FlxTween.tween(layers[6], { y:0, alpha:1.0 }, 1.6);
+        FlxTween.tween(layers[6], { y:0, alpha:1.0 }, 1.0);
     }
 
     public function night():Void {

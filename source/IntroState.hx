@@ -22,9 +22,12 @@ class IntroState extends FlxState
 	 * Function that is called up when to state is created to set it up. 
 	 */
 
-    private var readTime:Float = 0.1;
+    private var readTime:Float = 2.1;
 	override public function create():Void
 	{
+
+        FlxG.mouse.visible = false;
+
         text = new FlxText(0, 20, 400, "In The Beginning There was a ton of light and stuff in a galaxy far away or something. How cool isn't that?");
        
         text.alignment = "center";
