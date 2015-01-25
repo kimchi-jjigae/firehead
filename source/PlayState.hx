@@ -186,17 +186,17 @@ class PlayState extends FlxState
         npcList.push(new NPC(4500, 450));
         npcList.push(new NPC(4600, 450));
 
-        for(npc in npcList){
-            layers.getItemLayer().add(npc);
-        }
-
-        bonfire = new Thing(3500, 320, "bonfire.png", 66, 52, true);
+        bonfire = new Thing(3500, 340, "bonfire.png", 66, 52, true);
         layers.getForegroundLayer().add(bonfire);
 
         ashHeap = new Thing(1500, 350, "ash.png", 60, 36);
         ashHeap2 = new Thing(3000, 350, "ash.png", 60, 36);
         layers.getForegroundLayer().add(ashHeap);
         layers.getForegroundLayer().add(ashHeap2);
+
+        for(npc in npcList){
+            layers.getItemLayer().add(npc);
+        }
 
         torch = new Torch();
         add(torch);
