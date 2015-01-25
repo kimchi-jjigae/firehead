@@ -84,54 +84,8 @@ class PlayState extends FlxState
             torch.turnIntoDay();
             layers.makeMountainsHappy();
         }
-<<<<<<< HEAD
-=======
-
-        /*
-        var placeIter = placeManager.keys();
-        for(key in placeIter)
-        {
-            var place = placeManager.get(key);
-            if(!place.inactivated)
-            {
-                if((player.x >= place.xPosition) && 
-                   (player.x <= place.xPosition + place.width))
-                {
-                    runPlaceFunction(key);
-                }
-                else
-                {
-                    // do shit here
-                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
-                }
-            }
-            else
-            {
-            }
-        }
-        */
-
-        if (Math.abs(npc.x - player.x) <= 20) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-        }
-        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
-            // text.destroy();
-            // trace("Test");
-        }
-
-        if(FlxG.keys.justPressed.ENTER) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-            new FlxTimer(5, destroyText, 1);
-            // timer.start();
-            // text.destroy();
-        }
 
         torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
->>>>>>> 5084e38eec6fc0d30969fca380af2a0c570c0623
         
         snowUpdate();
 

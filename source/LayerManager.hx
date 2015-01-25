@@ -38,7 +38,6 @@ class LayerManager extends FlxGroup {
         time = _time;
         for(img in layers[1].members) {
             FlxTween.tween(cast(img, FlxSprite), { alpha:time }, .6);
-            //cast(img, FlxSprite).alpha = time;
         }
     }
 
