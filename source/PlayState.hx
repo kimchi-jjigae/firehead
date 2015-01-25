@@ -49,6 +49,8 @@ class PlayState extends FlxState
     var placeList:Array<Place>;
     var npcList:Array<NPC>;
 
+    var levelSquash:Float = 0.6;
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
@@ -176,28 +178,28 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        npcList.push(new NPC(150, 450));
+        npcList.push(new NPC(7000 * levelSquash, 450));
 
         //Two npcs standing together 
-        npcList.push(new NPC(1000, 450));
+        npcList.push(new NPC(1000 * levelSquash, 450));
         npcList[1].faceLeft(false);
 
-        npcList.push(new NPC(1100, 450));
+        npcList.push(new NPC(1000 * levelSquash + 100, 450));
 
-        npcList.push(new NPC(2500, 450));
-        npcList.push(new NPC(2600, 450));
+        npcList.push(new NPC(4500 * levelSquash, 450));
+        npcList.push(new NPC(4500 * levelSquash + 100, 450));
+
+        bonfire = new Thing(4200 * levelSquash, 340, "bonfire.png", 66, 52, true);
+        layers.getItemLayer().add(bonfire);
+
+        ashHeap = new Thing(1500 * levelSquash, 350, "ash.png", 60, 36);
+        ashHeap2 = new Thing(3000 * levelSquash, 350, "ash.png", 60, 36);
+        layers.getItemLayer().add(ashHeap);
+        layers.getItemLayer().add(ashHeap2);
 
         for(npc in npcList){
             layers.getItemLayer().add(npc);
         }
-
-        bonfire = new Thing(2000, 320, "bonfire.png", 66, 52, true);
-        //layers.getForegroundLayer().add(bonfire);
-
-        ashHeap = new Thing(1500, 350, "ash.png", 60, 36);
-        ashHeap2 = new Thing(3000, 350, "ash.png", 60, 36);
-        layers.getItemLayer().add(ashHeap);
-        layers.getItemLayer().add(ashHeap2);
 
         torch = new Torch();
         add(torch);
@@ -208,7 +210,7 @@ class PlayState extends FlxState
         if(!windy)
             snowSystem.setWindSpeed(player.velocity.x * 0.0001);
         else
-            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.012, 0.025));
+            snowSystem.setWindSpeed(FlxRandom.floatRanged(0.012, 0.035));
 
         for(flake in snowSystem.getSnowflakes())
         {
@@ -266,8 +268,8 @@ class PlayState extends FlxState
         //////////////////
 
         // ash pile
-        registerPlace(new Place(1500, 10, function() {
-            text = new FlxText(1500 + 30, 300, 200, "?");
+        registerPlace(new Place(1500 * levelSquash, 10, function() {
+            text = new FlxText(1500 * levelSquash + 30, 300, 200, "?");
                 text.color = 0xFFFF66;
                 add(text);
         }));
@@ -276,26 +278,43 @@ class PlayState extends FlxState
         // SNOWY SCENE //
         /////////////////
 
-        registerPlace(new Place(2400, 10, function() {
+        registerPlace(new Place(2400 * levelSquash, 10, function() {
             snowing = true;
         }));
 
-        registerPlace(new Place(3200, 10, function() {
+        registerPlace(new Place(3200 * levelSquash, 10, function() {
             windy = true;
+            player.setPowerScale(0.6);
         }));
 
-        // npc gets scared and jumps away!
-        registerPlace(new Place(npcList[0].x - 200, 10, function() {
-            player.enableControls(false);
-
-            npcList[0].jumpScaredly(1, function(){
-                //After npc has jumped, make it run away.
-                npcList[0].runAway(function(){
-                    player.enableControls(true);
-                    player.setPowerScale(0.8);
-                });
-            });
+        registerPlace(new Place(3500 * levelSquash, 10, function() {
+            windy = true;
+            player.setPowerScale(0.4);
         }));
+
+        registerPlace(new Place(3600 * levelSquash, 10, function() {
+            player.setPowerScale(0.25);
+        }));
+
+        registerPlace(new Place(3700 * levelSquash, 10, function() {
+            player.setPowerScale(0.2);
+        }));
+
+        registerPlace(new Place(3800 * levelSquash, 10, function() {
+            player.setPowerScale(0.4);
+        }));
+
+        // bonfire
+        registerPlace(new Place(4000 * levelSquash, 10, function() {
+            player.setPowerScale(1.0);
+            windy = false;
+        }));
+
+        // turn into day
+        registerPlace(new Place(6000 * levelSquash, 10, function() {
+            turnIntoDay();
+        }));
+
 
         // two npcs get startled and run away!
         registerPlace(new Place(npcList[1].x - 200, 10, function() {
@@ -311,52 +330,52 @@ class PlayState extends FlxState
                     });
                 });
             });
-
         }));
 
-        // turn into day
-        registerPlace(new Place(2000, 10, function() {
-            turnIntoDay();
-            FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
+        // two npcs get startled and run away! again!
+        registerPlace(new Place(npcList[3].x - 200, 10, function() {
+            npcList[3].faceLeft(true);
+            npcList[3].jumpScaredly(1, function(){
+                //After npc has jumped, make it run away.
+                npcList[3].runAway(function(){});
+                npcList[4].jumpScaredly(2, function(){
+                    //After npc has jumped, make it run away.
+                    npcList[4].runAway(function(){
+                        player.setPowerScale(0.7);
+                    });
+                });
+            });
         }));
 
         // become really strong and happy
-        registerPlace(new Place(2150, 10, function() {
+        registerPlace(new Place(2150 * levelSquash, 10, function() {
             player.setPowerScale(1.4);
         }));
 
         // turn into day
-        registerPlace(new Place(2100, 10, function() {
+        registerPlace(new Place(2100 * levelSquash, 10, function() {
             npcList[3].jumpScaredly(200, function(){});
             npcList[4].jumpScaredly(200, function(){});
         }));
 
-/*
-        // bonfire - starting to get small
-        registerPlace(new Place(1400, 10, function() {
-            player.setPowerScale(0.8);
-            //torch.scale.set(0.8, 0.8);
+        // npc gets scared and jumps away!
+        registerPlace(new Place(npcList[0].x - 200, 10, function() {
+            //player.enableControls(false);
+            npcList[0].jumpScaredly(100, function(){
+                //After npc has jumped, make it run away.
+                npcList[0].runAway(function(){
+                    player.enableControls(true);
+                    player.setPowerScale(0.8);
+                });
+            });
         }));
 
-        // bonfire - getting smaller
-        registerPlace(new Place(1600, 10, function() {
-            player.setPowerScale(0.5);
-            //torch.scale.set(0.5, 0.5);
+        // end game
+        registerPlace(new Place(7000 * levelSquash, 10, function() {
+            turnIntoDay();
+            FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
         }));
 
-        // bonfire - dying!
-        registerPlace(new Place(1800, 10, function() {
-            player.setPowerScale(0.3);
-            //torch.scale.set(0.3, 0.3);
-        }));
-
-        // bonfire at 2000
-        registerPlace(new Place(2000, 10, function() {
-            trace("hej\n");
-            player.setPowerScale(1.2);
-            //turnIntoDay();
-        }));
-        */
         
     }
 

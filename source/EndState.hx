@@ -29,12 +29,12 @@ class EndState extends FlxState
         FlxG.mouse.visible = false;
 
         // Vector fonts look like complete ass in this
-        text = new FlxText(0, 20, 400, "Something Something You Won The Hearts of Everyone, Nice.");
+        text = new FlxText(0, 20, 400, "Something Something You Won The Hearts of Everyone. Nice.");
         text.setFormat("assets/fonts/MoonFlower.ttf", 50, FlxColor.WHITE, 0, 0);
        
         text.alignment = "center";
         text.x = (FlxG.stage.stageWidth - text.width) * 0.5;
-        text.y = (FlxG.stage.stageHeight - text.height) * 0.5 - 30;
+        text.y = (FlxG.stage.stageHeight - text.height) * 0.5 - 80;
         text.alpha = 0;
 
         FlxTween.tween(text, { alpha:1.0 }, readTime, {complete:fadeOutThingy});

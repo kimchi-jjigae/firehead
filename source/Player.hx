@@ -91,7 +91,7 @@ class Player extends FlxSprite
                 facing = FlxObject.RIGHT;
             }
 
-            FlxAngle.rotatePoint(speed * Math.min(powerScale, 1.0), 0, 0, 0, mA, velocity);
+            FlxAngle.rotatePoint(speed * Math.max(0.5, Math.min(powerScale, 1.0)), 0, 0, 0, mA, velocity);
 
             if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) {
                 switch(facing) {
