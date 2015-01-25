@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxColor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.FlxState;
@@ -21,7 +22,7 @@ class IntroState extends FlxState
 	 * Function that is called up when to state is created to set it up. 
 	 */
 
-    private var readTime:Float = 2.3;
+    private var readTime:Float = 0.1;
 	override public function create():Void
 	{
         text = new FlxText(0, 20, 400, "In The Beginning There was a ton of light and stuff in a galaxy far away or something. How cool isn't that?");
@@ -39,11 +40,29 @@ class IntroState extends FlxState
 	}
 	
     private function fadeOutThingy(tween:FlxTween):Void {
-        FlxTween.tween(text, { alpha:0.0 }, readTime, {complete:goToGame});
+        FlxTween.tween(text, { alpha:0.0 }, readTime, {complete:showUsTheDude});
+    }
+
+    private var guyDude:IntroDude;
+    private function showUsTheDude(tween:FlxTween):Void {
+
+        guyDude = new IntroDude();
+        add(guyDude);
+        guyDude.x = FlxG.width / 2.0;
+        guyDude.y = FlxG.height/ 2.0;
+        FlxTween.tween(guyDude, { alpha:1.0 }, readTime * 0.3, {complete:
+            function(tween:FlxTween) {
+                guyDude.animation.play("default");
+                FlxTween.tween(guyDude, {alpha:1.0}, readTime * 0.3 * 7, {complete:goToGame});
+            }
+        });
+
     }
 
     private function goToGame(tween:FlxTween):Void {
-        FlxG.switchState(new PlayState());
+        FlxG.camera.fade(FlxColor.BLACK,.33, false,function() {
+            FlxG.switchState(new PlayState());
+        });
     }
 
 	/**
