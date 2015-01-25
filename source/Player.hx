@@ -18,13 +18,14 @@ class Player extends FlxSprite
     {
         super(X, Y);
         // makeGraphic(16, 16, FlxColor.BLUE);
-        loadGraphic(AssetPaths.stand_still_280__png, true, 68, 49);
+        loadGraphic(AssetPaths.flame_animation__png, true, 82, 54);
         setFacingFlip(FlxObject.LEFT, false, false);
         setFacingFlip(FlxObject.RIGHT, true, false);
-        animation.add("lr", [1, 2, 3, 4], 10, false);
-        animation.add("lr", [0, 1, 0, 2], 6, false);
-        animation.add("u", [6, 7, 6, 8], 6, false);
-        animation.add("d", [0, 1, 0, 2], 6, false);
+        animation.add("default", [1, 2, 3, 4], 10, false);
+        animation.add("lr", [5, 6, 7, 8, 9, 10, 11, 12], 10, true);
+        // We don't have movement up and down
+        // animation.add("u", [6, 7, 6, 8], 6, false);
+        // animation.add("d", [0, 1, 0, 2], 6, false);
         drag.x = drag.y = 1600;
         acceleration.y = 0;
         // y = 360;
@@ -42,7 +43,7 @@ class Player extends FlxSprite
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
         // Static animation BECAUSE WE CAN
-        animation.play("lr");
+        animation.play("default");
 
         if (_up && _down) 
             _up = _down = false;

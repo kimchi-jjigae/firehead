@@ -11,4 +11,7 @@ class NPC extends FlxSprite {
 
         animation.add("default", [0, 1, 2, 3, 4], 20, false);
     }
+
+    override public function update():Void {
+    }
 }

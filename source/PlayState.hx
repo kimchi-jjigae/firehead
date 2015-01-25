@@ -32,6 +32,7 @@ class PlayState extends FlxState
     var npc:NPC;
     var ageSequence:Ages;
     var bonfire:Thing;
+    var ashHeap:Thing;
     var placeManager:Map<String, Place>;
 
 
@@ -171,11 +172,14 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        npc = new NPC(150, 440);
-        layers.getForegroundLayer().add(npc);
+        // npc = new NPC(150, 440);
+        // layers.getForegroundLayer().add(npc);
 
         bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
         layers.getForegroundLayer().add(bonfire);
+
+        ashHeap = new Thing(500, 350, "ash.png", 60, 36);
+        layers.getForegroundLayer().add(ashHeap);
 
         torch = new Torch();
         add(torch);
@@ -229,7 +233,7 @@ class PlayState extends FlxState
 
         // initial text?
         registerPlace(new Place(500, 10, function() {
-            text = new FlxText(500, 300, 200, "hej!");
+            text = new FlxText(player.x + 10, player.y - 20, 200, "?");
                 text.color = 0xFFFF66;
                 add(text);
         }));
@@ -246,15 +250,15 @@ class PlayState extends FlxState
         
     }
 
-    private function changeText(Timer:FlxTimer):Void {
-        text = new FlxText(150, 300, 200, "I'm new!");
-        text.color = 0xFFFF66;
-        add(text);
-    }
+    // private function changeText(Timer:FlxTimer):Void {
+    //     text = new FlxText(150, 300, 200, "I'm new!");
+    //     text.color = 0xFFFF66;
+    //     add(text);
+    // }
 
-    private function destroyText(Timer:FlxTimer):Void {
-        text.destroy();
-    }
+    // private function destroyText(Timer:FlxTimer):Void {
+    //     text.destroy();
+    // }
 
     private function shrinkFlame(Timer:FlxTimer):Void {
         player.scale.x = 0.5;

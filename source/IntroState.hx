@@ -28,10 +28,11 @@ class IntroState extends FlxState
 
         FlxG.mouse.visible = false;
 
-        text = new FlxText(0, 20, 400, "In The Beginning There was a ton of light and stuff in a galaxy far away or something. How cool isn't that?");
+        // Vector fonts look like complete ass in this
+        text = new FlxText(0, 20, 400, "EN.KIN.DLE");
+        text.setFormat("assets/fonts/MoonFlower.ttf", 50, FlxColor.WHITE, 0, 0);
        
         text.alignment = "center";
-        text.size = 20;
         text.x = (FlxG.stage.stageWidth - text.width) * 0.5;
         text.y = (FlxG.stage.stageHeight - text.height) * 0.5;
         text.alpha = 0;
