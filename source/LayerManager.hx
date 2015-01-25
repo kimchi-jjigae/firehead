@@ -35,6 +35,7 @@ class LayerManager extends FlxGroup {
         addLayer(AssetPaths.fogfront__png, 1280, 724, 1.1);
 
         frontMountains = addLayer(AssetPaths.coolface__png, 1280, 724, 1.75);
+        frontMountains.y = 70;
         night();
     }
 
@@ -58,7 +59,7 @@ class LayerManager extends FlxGroup {
     }
 
     public function makeMountainsSad():Void {
-        FlxTween.tween(frontMountains, { y:0, alpha:1.0 }, 1.0);
+        FlxTween.tween(frontMountains, { y:70, alpha:1.0 }, 1.0);
     }
 
     public function night():Void {

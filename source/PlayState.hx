@@ -251,6 +251,19 @@ class PlayState extends FlxState
                 add(text);
         }));
 
+        // npc gets scared and jumps away!
+        registerPlace(new Place(npcList[0].x - 100, 10, function() {
+            player.enableControls(false);
+
+            npcList[0].jumpScaredly(1, function(){
+                //After npc has jumped, make it run away.
+                npcList[0].runAway(function(){
+                    player.enableControls(true);
+                    player.setPowerScale(0.8);
+                });
+            });
+        }));
+
         // bonfire - starting to get small
         registerPlace(new Place(1400, 10, function() {
             player.setPowerScale(0.8);
