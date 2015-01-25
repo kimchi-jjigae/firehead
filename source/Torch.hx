@@ -1,4 +1,4 @@
-import flixel.FlxTween;
+import flixel.tweens.FlxTween;
 import flixel.util.FlxPoint;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
