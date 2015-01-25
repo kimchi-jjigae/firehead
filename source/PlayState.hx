@@ -298,7 +298,7 @@ class PlayState extends FlxState
             player.setPowerScale(0.2);
         }));
 
-        registerPlace(new Place(3900, 10, function() {
+        registerPlace(new Place(3800, 10, function() {
             player.setPowerScale(0.4);
         }));
 
