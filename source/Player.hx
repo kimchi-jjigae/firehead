@@ -18,7 +18,7 @@ class Player extends FlxSprite
     {
         super(X, Y);
         // makeGraphic(16, 16, FlxColor.BLUE);
-        loadGraphic(AssetPaths.stand_still_200__png, true, 52, 39);
+        loadGraphic(AssetPaths.stand_still_280__png, true, 68, 49);
         setFacingFlip(FlxObject.LEFT, false, false);
         setFacingFlip(FlxObject.RIGHT, true, false);
         animation.add("lr", [1, 2, 3, 4], 10, false);
@@ -41,7 +41,8 @@ class Player extends FlxSprite
         _left = FlxG.keys.anyPressed(["LEFT", "A"]);
         _right = FlxG.keys.anyPressed(["RIGHT", "D"]);
 
-        // animation.play("lr");
+        // Static animation BECAUSE WE CAN
+        animation.play("lr");
 
         if (_up && _down) 
             _up = _down = false;
