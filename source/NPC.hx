@@ -9,7 +9,12 @@ class NPC extends FlxSprite {
     {
         super(X, Y);
         runningAway = false;
-        loadGraphic(AssetPaths.player__png, true, 16, 16);
+        loadGraphic(AssetPaths.walkingeskimo__png, true, 140, 186);
+        offset.x = 70;
+        offset.y = 186;
+        scale.x = scale.y = 0.4;
+
+        animation.add("default", [0, 1, 2, 3, 4], 20, false);
     }
 
     override public function update():Void 

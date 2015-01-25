@@ -1,3 +1,6 @@
+// TODO
+// Player seems to be spawning in the same place regardless of the Y coordinate - INVESTIGATE
+
 package;
 
 import flixel.FlxG;
@@ -28,7 +31,11 @@ class PlayState extends FlxState
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
+    var ageSequence:Ages;
     var bonfire:Thing;
+    var ashHeap:Thing;
+    var placeManager:Map<String, Place>;
+
 
     // var legs:Legs;
     var timer:FlxTimer;
@@ -56,7 +63,23 @@ class PlayState extends FlxState
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
 
+
+        npc = new NPC(150,360);
+        layers.getForegroundLayer().add(npc);
+
+        // ageSequence = new Ages(140, 340);
+        // layers.getForegroundLayer().add(ageSequence);
+
+        placeManager = new Map<String, Place>();
+        placeManager.set("01_darkness", new Place(0, 1));
+
+        // FlxG.sound.playMusic("music_1");
+
+        placeManager.set("01_darkness", new Place(0, 100));
+        placeManager.set("02_introtext", new Place(200, 100));
+
         registerPlaces();
+
 	}
 
 	/**
@@ -68,6 +91,19 @@ class PlayState extends FlxState
 		super.destroy();
 	}
 
+
+    public function turnIntoDay():Void {
+        layers.day();
+        torch.turnIntoDay();
+        layers.makeMountainsHappy();
+    }
+
+    public function turnIntoNight():Void {
+        layers.night();
+        torch.turnIntoNight();
+        layers.makeMountainsSad();
+    }
+
 	/**
 	 * Function that is called once every frame.
 	 */
@@ -77,61 +113,34 @@ class PlayState extends FlxState
         canvas.fill(FlxColor.TRANSPARENT);
 
         if(FlxG.keys.anyPressed(["N"])){
-            layers.night();
-            torch.turnIntoNight();
-            layers.makeMountainsSad();
+            turnIntoNight();
         }
 
         if(FlxG.keys.anyPressed(["M"])){
-            layers.day();
-            torch.turnIntoDay();
-            layers.makeMountainsHappy();
+            turnIntoDay();
         }
 
-        /*
-        var placeIter = placeManager.keys();
-        for(key in placeIter)
-        {
-            var place = placeManager.get(key);
-            if(!place.inactivated)
-            {
-                if((player.x >= place.xPosition) && 
-                   (player.x <= place.xPosition + place.width))
-                {
-                    runPlaceFunction(key);
-                }
-                else
-                {
-                    // do shit here
-                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
-                }
-            }
-            else
-            {
-            }
-        }
-        */
+        // Just testing crap - IGNORE
+        // if (Math.abs(npc.x - player.x) <= .2) {
+        //     // text = new FlxText(150, 300, 200, "Test");
+        //     // text.color = 0xFFFF66;
+        //     // add(text);
+        //     // player.scale.x = 0.5;
+        //     // player.scale.y = 0.5;
+        // }
+        // else if (text != null && Math.abs(npc.x - player.x) >= 20) {
+        //     // text.destroy();
+        //     // trace("Test");
+        // }
 
-        /*
-        if (Math.abs(npc.x - player.x) <= 20) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-        }
-        else if (text != null && Math.abs(npc.x - player.x) >= 20) {
-            // text.destroy();
-            // trace("Test");
-        }
-
-        if(FlxG.keys.justPressed.ENTER) {
-            text = new FlxText(150, 300, 200, "Test");
-            text.color = 0xFFFF66;
-            add(text);
-            new FlxTimer(5, destroyText, 1);
-            // timer.start();
-            // text.destroy();
-        }
-        */
+        // if(FlxG.keys.justPressed.ENTER) {
+        //     text = new FlxText(150, 300, 200, "Test");
+        //     text.color = 0xFFFF66;
+        //     add(text);
+        //     new FlxTimer(2, shrinkFlame, 1);
+        //     // timer.start();
+        //     // text.destroy();
+        // }
 
         torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
         
@@ -161,7 +170,7 @@ class PlayState extends FlxState
 
         // legs = new Legs(90,370);
 
-        player = new Player(81,340);
+        player = new Player(-200, 340);
         layers.getForegroundLayer().add(player);
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
@@ -176,6 +185,9 @@ class PlayState extends FlxState
 
         bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
         layers.getForegroundLayer().add(bonfire);
+
+        ashHeap = new Thing(500, 350, "ash.png", 60, 36);
+        layers.getForegroundLayer().add(ashHeap);
 
         torch = new Torch();
         add(torch);
@@ -238,7 +250,7 @@ class PlayState extends FlxState
 
         // initial text?
         registerPlace(new Place(500, 10, function() {
-            text = new FlxText(500, 300, 200, "hej!");
+            text = new FlxText(player.x + 10, player.y - 20, 200, "?");
                 text.color = 0xFFFF66;
                 add(text);
         }));
@@ -276,18 +288,23 @@ class PlayState extends FlxState
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
             trace("hej\n");
-            //player.grow(50);
+            turnIntoDay();
         }));
         
     }
 
-    private function changeText(Timer:FlxTimer):Void {
-        text = new FlxText(150, 300, 200, "I'm new!");
-        text.color = 0xFFFF66;
-        add(text);
-    }
+    // private function changeText(Timer:FlxTimer):Void {
+    //     text = new FlxText(150, 300, 200, "I'm new!");
+    //     text.color = 0xFFFF66;
+    //     add(text);
+    // }
 
-    private function destroyText(Timer:FlxTimer):Void {
-        text.destroy();
+    // private function destroyText(Timer:FlxTimer):Void {
+    //     text.destroy();
+    // }
+
+    private function shrinkFlame(Timer:FlxTimer):Void {
+        player.scale.x = 0.5;
+        player.scale.y = 0.5;
     }
 }

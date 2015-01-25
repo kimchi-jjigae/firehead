@@ -31,7 +31,9 @@
 	<classpath name="source" />
 	<assets path="assets" />
 	<assets path="assets">
-    <music path="music/Firehead_ambient.mp3" id="music_1" />
+    <music path="music/Flamainmenu.mp3" id="music_1" />
+    <music path="music/Flameending.mp3" id="music_2" />
+    <music path="music/Townmusic.mp3" id="music_3" />
 	</assets>
 	
 	<!--------------------------------LIBRARIES------------------------------------->
