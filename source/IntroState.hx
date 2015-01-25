@@ -81,9 +81,15 @@ class IntroState extends FlxState
 	/**
 	 * Function that is called once every frame.
 	 */
+    private var bajs:Float = 0;
 	override public function update():Void
 	{
+        bajs += 0.05;
 		super.update();
+        if(guyDude != null){
+            guyDude.y = FlxG.height / 2  + Math.sin(bajs) * 5;
+        }
+
         /*
         if(FlxG.keys.justReleased.SPACE)
         {
