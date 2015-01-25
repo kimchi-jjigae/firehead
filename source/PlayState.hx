@@ -33,7 +33,6 @@ class PlayState extends FlxState
 
     var layers:LayerManager;
     var player:Player;
-    var npc:NPC;
     var ageSequence:Ages;
     var bonfire:Thing;
     var ashHeap:Thing;
@@ -73,7 +72,7 @@ class PlayState extends FlxState
         placeManager = new Map<String, Place>();
         placeManager.set("01_darkness", new Place(0, 1));
 
-        // FlxG.sound.playMusic("music_1");
+        FlxG.sound.playMusic("music_1");
 
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
@@ -161,8 +160,7 @@ class PlayState extends FlxState
         snowSystem = new SnowSystem(0, 200);
     }
 
-    private function spriteSetup()
-    {
+    private function spriteSetup() {
         layers = new LayerManager();
         add(layers);
 
@@ -177,12 +175,19 @@ class PlayState extends FlxState
         layers.getForegroundLayer().add(canvas);
         //layers.getForegroundLayer().add(legs);
 
-        npcList.push(new NPC(150, 360));
-        npcList.push(new NPC(2500, 360));
-        npcList.push(new NPC(1000, 360));
-        for(npc in npcList)
-        {
-            //layers.getForegroundLayer().add(npc);
+        npcList.push(new NPC(150, 450));
+
+        //Two npcs standing together 
+        npcList.push(new NPC(1000, 450));
+        npcList[1].faceLeft(false);
+
+        npcList.push(new NPC(1100, 450));
+
+        npcList.push(new NPC(2500, 450));
+        npcList.push(new NPC(2600, 450));
+
+        for(npc in npcList){
+            layers.getItemLayer().add(npc);
         }
 
         bonfire = new Thing(2000, 320, "bonfire.png", 66, 52, true);
@@ -242,16 +247,16 @@ class PlayState extends FlxState
         }
     }
 
-            /* sorry just keeping this here for reference
-            if(FlxG.keys.justPressed.ENTER) {
-                text = new FlxText(150, 300, 200, "Test");
-                text.color = 0xFFFF66;
-                add(text);
-                new FlxTimer(5, destroyText, 1);
-                // timer.start();
-                // text.destroy();
-            }
-            */
+    /* sorry just keeping this here for reference
+       if(FlxG.keys.justPressed.ENTER) {
+       text = new FlxText(150, 300, 200, "Test");
+       text.color = 0xFFFF66;
+       add(text);
+       new FlxTimer(5, destroyText, 1);
+    // timer.start();
+    // text.destroy();
+    }
+     */
 
     public function registerPlaces():Void { // keep these are in order!!
 
@@ -283,28 +288,60 @@ class PlayState extends FlxState
             turnIntoDay();
         }));
 
+        // npc gets scared and jumps away!
+        registerPlace(new Place(npcList[0].x - 100, 10, function() {
+            player.enableControls(false);
+
+            npcList[0].jumpScaredly(1, function(){
+                //After npc has jumped, make it run away.
+                npcList[0].runAway(function(){
+                    player.enableControls(true);
+                    player.setPowerScale(0.8);
+                });
+            });
+        }));
+
+        // two npcs get startled and run away!
+        registerPlace(new Place(npcList[1].x - 200, 10, function() {
+            npcList[1].faceLeft(true);
+            npcList[1].jumpScaredly(1, function(){
+                //After npc has jumped, make it run away.
+                npcList[1].runAway(function(){});
+
+                npcList[2].jumpScaredly(2, function(){
+                    //After npc has jumped, make it run away.
+                    npcList[2].runAway(function(){
+                        player.setPowerScale(0.7);
+                    });
+                });
+            });
+
+        }));
+
 /*
         // bonfire - starting to get small
         registerPlace(new Place(1400, 10, function() {
-            player.scale.set(0.8, 0.8);
+            player.setPowerScale(0.8);
             //torch.scale.set(0.8, 0.8);
         }));
 
         // bonfire - getting smaller
         registerPlace(new Place(1600, 10, function() {
-            player.scale.set(0.5, 0.5);
+            player.setPowerScale(0.5);
             //torch.scale.set(0.5, 0.5);
         }));
 
         // bonfire - dying!
         registerPlace(new Place(1800, 10, function() {
-            player.scale.set(0.3, 0.3);
+            player.setPowerScale(0.3);
             //torch.scale.set(0.3, 0.3);
         }));
 
         // bonfire at 2000
         registerPlace(new Place(2000, 10, function() {
             trace("hej\n");
+            player.setPowerScale(1.2);
+            //turnIntoDay();
         }));
         */
         

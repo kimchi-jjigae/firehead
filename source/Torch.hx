@@ -7,23 +7,19 @@ import flixel.group.FlxSpriteGroup;
 
 import flash.display.BlendMode;
 
+using flixel.util.FlxSpriteUtil;
+
 //This class should have some light stuff to light up the world I'm tired
 class Torch extends FlxSpriteGroup
 {
     private var darkPart:FlxSprite;
     private var torchPart:FlxSprite;
-    //this stamp has damp so watch out for it 
-    private var dampStamp:FlxSprite;
-
-
 
     public function new(max:Int = 2){
         super(max);
 
         darkPart = new FlxSprite();
-        dampStamp = new FlxSprite();
         darkPart.makeGraphic(FlxG.width, FlxG.height, 0xff111111, true);
-        dampStamp.makeGraphic(FlxG.width, FlxG.height, 0xff444444, true);
         darkPart.scrollFactor.x = darkPart.scrollFactor.y = 0;
         darkPart.blend = BlendMode.MULTIPLY;
         scrollFactor.x = scrollFactor.y = 0;
@@ -40,8 +36,6 @@ class Torch extends FlxSpriteGroup
         torchPart.alpha = 0.4;
 
         torchPart.blend = BlendMode.SCREEN;
-
-        //add(torchPart);
     }
 
     public function turnIntoDay():Void {
@@ -76,7 +70,7 @@ class Torch extends FlxSpriteGroup
         torchPart.y = lightY; //FlxG.camera.target.y;
 
         var screenXY:FlxPoint = torchPart.getScreenXY();
-        darkPart.stamp(dampStamp, 0, 0);
+        darkPart.fill(0xff444444);
 
         darkPart.stamp(torchPart,
                 Std.int(screenXY.x - torchPart.width / 2),

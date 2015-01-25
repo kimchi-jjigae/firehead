@@ -34,7 +34,7 @@ class IntroState extends FlxState
        
         text.alignment = "center";
         text.x = (FlxG.stage.stageWidth - text.width) * 0.5;
-        text.y = (FlxG.stage.stageHeight - text.height) * 0.5;
+        text.y = (FlxG.stage.stageHeight - text.height) * 0.5 - 30;
         text.alpha = 0;
 
         FlxTween.tween(text, { alpha:1.0 }, readTime, {complete:fadeOutThingy});
@@ -81,8 +81,14 @@ class IntroState extends FlxState
 	/**
 	 * Function that is called once every frame.
 	 */
+    private var bajs:Float = 0;
 	override public function update():Void
 	{
+        bajs += 0.05;
 		super.update();
+
+        if(guyDude != null){
+            guyDude.y = FlxG.height / 2  + Math.sin(bajs) * 5;
+        }
 	}	
 }
