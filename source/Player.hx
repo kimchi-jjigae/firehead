@@ -85,7 +85,7 @@ class Player extends FlxSprite
                 facing = FlxObject.RIGHT;
             }
 
-            FlxAngle.rotatePoint(speed, 0, 0, 0, mA, velocity);
+            FlxAngle.rotatePoint(speed * Math.min(powerScale, 1.0), 0, 0, 0, mA, velocity);
 
             if ((velocity.x != 0 || velocity.y != 0) && touching == FlxObject.NONE) {
                 switch(facing) {
@@ -109,6 +109,13 @@ class Player extends FlxSprite
         if(x < -200){
             x = -200;
         }
+    }
+
+    private var powerScale = 1.0;
+    //Powerscale ranges between 0 and 1. scales movement speed and ordinary scale.
+    public function setPowerScale(s:Float):Void {
+        FlxTween.tween(this, { powerScale:s } , 0.5);
+        FlxTween.tween(scale, { x:s, y:s } , 0.5);
     }
 
     private var goalY:Float = 340;
