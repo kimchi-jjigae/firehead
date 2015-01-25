@@ -179,7 +179,7 @@ class PlayState extends FlxState
             layers.getItemLayer().add(npc);
         }
 
-        bonfire = new Thing(2000, 330, "bonfire.png", 66, 52);
+        bonfire = new Thing(2000, 330, "bonfire.png", 66, 52, true);
         layers.getItemLayer().add(bonfire);
 
         ashHeap = new Thing(500, 350, "ash.png", 60, 36);
@@ -242,17 +242,13 @@ class PlayState extends FlxState
             }
             */
 
-    public function registerPlaces():Void { // make sure these are in order!
+    public function registerPlaces():Void { // keep these are in order!!
 
         // initial text?
         registerPlace(new Place(500, 10, function() {
             text = new FlxText(player.x + 10, player.y - 20, 200, "?");
                 text.color = 0xFFFF66;
                 add(text);
-        }));
-
-        registerPlace(new Place(400, 10, function() {
-            //player.grow();
         }));
 
         // bonfire - starting to get small
