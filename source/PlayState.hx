@@ -28,6 +28,7 @@ class PlayState extends FlxState
     var player:Player;
     var npc:NPC;
     var campfire:Object;
+
     // var legs:Legs;
     var timer:FlxTimer;
 
@@ -35,11 +36,15 @@ class PlayState extends FlxState
 
     var placeManager:Map<String, Place>;
 
+    var placeList:Array<Place>;
+
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
+        placeList = new Array<Place>();
+
 		super.create();
 
         FlxG.sound.playMusic("music_1");
@@ -49,6 +54,8 @@ class PlayState extends FlxState
 
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
+
+        registerPlaces();
 	}
 
 	/**
@@ -118,7 +125,10 @@ class PlayState extends FlxState
             // timer.start();
             // text.destroy();
         }
+        
         snowUpdate();
+
+        placeUpdate();
 
 		super.update();
 	}	
@@ -176,7 +186,37 @@ class PlayState extends FlxState
     }
 
     public function registerPlace(p:Place):Place {
-        return null;
+        placeList.push(p);
+        placeList.sort(function(a:Place, b:Place) {
+            return (a.xPosition < b.xPosition)?-1:1;
+        });
+        return p;
+    }
+    
+    /////////////////
+    ///Check Here!///
+    /////////////////
+    public function registerPlaces():Void {
+
+        registerPlace(new Place(200, 10, function() {
+            trace("Ayy yo");
+        }));
+
+        registerPlace(new Place(400, 10, function() {
+            player.grow();
+        }));
+        
+    }
+
+    public function placeUpdate():Void {
+        if(placeList.length > 0){
+            if(placeList[0].xPosition < FlxG.camera.target.x) {
+                if(placeList[0].happenFunc != null){
+                    placeList[0].happenFunc();
+                    placeList.remove(placeList[0]);
+                }
+            }
+        }
     }
 
     public function runPlaceFunction(place:String)

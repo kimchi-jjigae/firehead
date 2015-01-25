@@ -1,5 +1,7 @@
 package ;
 
+import flixel.tweens.FlxTween;
+
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import flixel.FlxObject;
@@ -103,7 +105,7 @@ class Player extends FlxSprite
     private var bajs:Float = 0;
 
     public function grow(amount:Float = 1.0):Void {
-
+        FlxTween.tween(scale, { x:scale.x + amount, y:scale.y + amount }, 0.5);
     }
 
     // private function dialogue():Void{
