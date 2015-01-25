@@ -193,6 +193,18 @@ class PlayState extends FlxState
         return p;
     }
     
+
+    public function placeUpdate():Void {
+        if(placeList.length > 0){
+            if(placeList[0].xPosition < FlxG.camera.target.x) {
+                if(placeList[0].happenFunc != null){
+                    placeList[0].happenFunc();
+                    placeList.remove(placeList[0]);
+                }
+            }
+        }
+    }
+
     /////////////////
     ///Check Here!///
     /////////////////
@@ -205,18 +217,11 @@ class PlayState extends FlxState
         registerPlace(new Place(400, 10, function() {
             player.grow();
         }));
-        
-    }
 
-    public function placeUpdate():Void {
-        if(placeList.length > 0){
-            if(placeList[0].xPosition < FlxG.camera.target.x) {
-                if(placeList[0].happenFunc != null){
-                    placeList[0].happenFunc();
-                    placeList.remove(placeList[0]);
-                }
-            }
-        }
+        registerPlace(new Place(600, 10, function() {
+            player.grow(50);
+        }));
+        
     }
 
     public function runPlaceFunction(place:String)
