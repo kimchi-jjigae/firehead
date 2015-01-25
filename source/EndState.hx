@@ -44,29 +44,16 @@ class EndState extends FlxState
 	}
 	
     private function fadeOutThingy(tween:FlxTween):Void {
-        FlxTween.tween(text, { alpha:0.0 }, readTime, {complete:showUsTheDude});
+        FlxTween.tween(text, { alpha:0.0 }, readTime * 2, {complete:showUsTheDude});
     }
 
     private var guyDude:IntroDude;
     private function showUsTheDude(tween:FlxTween):Void {
 
-        guyDude = new IntroDude();
-        add(guyDude);
-        guyDude.x = FlxG.width / 2.0;
-        guyDude.y = FlxG.height/ 2.0;
-        FlxTween.tween(guyDude, { alpha:1.0 }, readTime * 0.3, {complete:
-            function(tween:FlxTween) {
-                guyDude.animation.play("default");
-                FlxTween.tween(guyDude, {alpha:1.0}, readTime * 0.3 * 7, {complete:goToGame});
-            }
-        });
-
     }
 
     private function goToGame(tween:FlxTween):Void {
-        FlxG.camera.fade(FlxColor.BLACK,.33, false,function() {
-            FlxG.switchState(new PlayState());
-        });
+
     }
 
 	/**

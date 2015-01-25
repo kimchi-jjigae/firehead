@@ -356,8 +356,14 @@ class PlayState extends FlxState
                     });
                 });
             });
-
         }));
+
+        /*
+        registerPlace(new Place(2100, 10, function() {
+            npcList[3].jumpScaredly(200, function(){});
+            npcList[4].jumpScaredly(200, function(){});
+        }));
+        */
 
         // end game
         registerPlace(new Place(7000, 10, function() {
