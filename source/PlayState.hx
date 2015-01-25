@@ -219,7 +219,9 @@ class PlayState extends FlxState
         }));
 
         registerPlace(new Place(600, 10, function() {
-            player.grow(50);
+        }));
+
+        registerPlace(new Place(700, 10, function() {
         }));
         
     }
