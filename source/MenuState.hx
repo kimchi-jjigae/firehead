@@ -27,8 +27,6 @@ class MenuState extends FlxState
         text.size = 20;
 		super.create();
         add(text);
-
-
         
 	}
 	

@@ -22,52 +22,39 @@ class PlayState extends FlxState
     var canvas:FlxSprite;
     var snowSystem:SnowSystem;
     
-    // var physics:Physics;
     var text:FlxText;
 
     var layers:LayerManager;
     var player:Player;
     var npc:NPC;
     var ageSequence:Ages;
+    var bonfire:Thing;
+
+
     // var legs:Legs;
     var timer:FlxTimer;
 
-    var placeManager:Map<String, Place>;
+    var torch:Torch;
+
+    var placeList:Array<Place>;
 
 	/**
 	 * Function that is called up when to state is created to set it up. 
 	 */
 	override public function create():Void
 	{
+        placeList = new Array<Place>();
+
 		super.create();
 
         FlxG.sound.playMusic("music_1");
 
-        canvas = new FlxSprite();
-        snowSystem = new SnowSystem(0, 200);
-        
-        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+        snowSetup();
+        spriteSetup();
 
-        layers = new LayerManager();
-        add(layers);
-
-        // text = new FlxText(150, 300, 200, "Test");
-        // text.color = 0xFFFF66;
-        // add(text);
-
-        // legs = new Legs(90,370);
-
-        player = new Player(75,335);
-        FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
-        player = new Player(81,340);
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
-        
-
-        layers.getForegroundLayer().add(player);
-        layers.getForegroundLayer().add(canvas);
-        // layers.getForegroundLayer().add(legs);
-
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
+
 
         npc = new NPC(150,360);
         layers.getForegroundLayer().add(npc);
@@ -82,8 +69,11 @@ class PlayState extends FlxState
 
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
+
+        registerPlaces();
+
 	}
-	
+
 	/**
 	 * Function that is called when this state is destroyed - you might want to 
 	 * consider setting all objects this state uses to null to help garbage collection.
@@ -93,6 +83,19 @@ class PlayState extends FlxState
 		super.destroy();
 	}
 
+
+    public function turnIntoDay():Void {
+        layers.day();
+        torch.turnIntoDay();
+        layers.makeMountainsHappy();
+    }
+
+    public function turnIntoNight():Void {
+        layers.night();
+        torch.turnIntoNight();
+        layers.makeMountainsSad();
+    }
+
 	/**
 	 * Function that is called once every frame.
 	 */
@@ -101,42 +104,12 @@ class PlayState extends FlxState
         canvas.x = FlxG.camera.scroll.x;
         canvas.fill(FlxColor.TRANSPARENT);
 
-        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
-
         if(FlxG.keys.anyPressed(["N"])){
-            layers.night();
+            turnIntoNight();
         }
 
         if(FlxG.keys.anyPressed(["M"])){
-            layers.day();
-        }
-
-        for(flake in snowSystem.getSnowflakes())
-        {
-            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 3, 0x77A2F1F2);
-            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.5, 0xCCEDFEFF);
-        }
-
-        var placeIter = placeManager.keys();
-        for(key in placeIter)
-        {
-            var place = placeManager.get(key);
-            if(!place.inactivated)
-            {
-                if((player.x >= place.xPosition) && 
-                   (player.x <= place.xPosition + place.width))
-                {
-                    runPlaceFunction(key);
-                }
-                else
-                {
-                    // do shit here
-                    //Lib.utils.shit("really much", function(){ alsoFart(101); });
-                }
-            }
-            else
-            {
-            }
+            turnIntoDay();
         }
 
         if (Math.abs(npc.x - player.x) <= .2) {
@@ -160,20 +133,112 @@ class PlayState extends FlxState
             // text.destroy();
         }
 
-        snowSystem.update();
+        torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
+        
+        snowUpdate();
+
+        placeUpdate();
+
 		super.update();
 	}	
 
-    public function runPlaceFunction(place:String)
+    private function snowSetup()
     {
-        if(place == "01_darkness")
+        canvas = new FlxSprite();
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+
+        snowSystem = new SnowSystem(0, 200);
+    }
+
+    private function spriteSetup()
+    {
+        layers = new LayerManager();
+        add(layers);
+
+        // text = new FlxText(150, 300, 200, "Test");
+        // text.color = 0xFFFF66;
+        // add(text);
+
+        // legs = new Legs(90,370);
+
+        player = new Player(-200, 340);
+        layers.getForegroundLayer().add(player);
+        layers.getForegroundLayer().add(canvas);
+        //layers.getForegroundLayer().add(legs);
+
+        npc = new NPC(150, 440);
+        layers.getForegroundLayer().add(npc);
+
+        bonfire = new Thing(2000, 320, "bonfire.png", 66, 52);
+        layers.getForegroundLayer().add(bonfire);
+
+        torch = new Torch();
+        add(torch);
+    }
+
+    private function snowUpdate()
+    {
+        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+
+        for(flake in snowSystem.getSnowflakes())
         {
-            //trace("you're in darkness\n");
+            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 1.5, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.0, 0xCCEDFEFF);
         }
-        else if(place == "02_introtext")
-        {
-            //trace("you're reading text\n");
+
+        snowSystem.update();
+    }
+
+    public function registerPlace(p:Place):Place {
+        placeList.push(p);
+        placeList.sort(function(a:Place, b:Place) {
+            return (a.xPosition < b.xPosition)?-1:1;
+        });
+        return p;
+    }
+    
+
+    public function placeUpdate():Void {
+        if(placeList.length > 0){
+            if(placeList[0].xPosition < FlxG.camera.target.x) {
+                if(placeList[0].happenFunc != null){
+                    placeList[0].happenFunc();
+                    placeList.remove(placeList[0]);
+                }
+            }
         }
+    }
+
+            /* sorry just keeping this here for reference
+            if(FlxG.keys.justPressed.ENTER) {
+                text = new FlxText(150, 300, 200, "Test");
+                text.color = 0xFFFF66;
+                add(text);
+                new FlxTimer(5, destroyText, 1);
+                // timer.start();
+                // text.destroy();
+            }
+            */
+
+    public function registerPlaces():Void { // make sure these are in order!
+
+        // initial text?
+        registerPlace(new Place(500, 10, function() {
+            text = new FlxText(500, 300, 200, "hej!");
+                text.color = 0xFFFF66;
+                add(text);
+        }));
+
+        registerPlace(new Place(400, 10, function() {
+            //player.grow();
+        }));
+
+        // bonfire at 2000
+        registerPlace(new Place(2000, 10, function() {
+            player.grow(50);
+            turnIntoDay();
+        }));
+        
     }
 
     private function changeText(Timer:FlxTimer):Void {
