@@ -61,7 +61,7 @@ class NPC extends FlxSprite {
         var jumpadd:Float = Math.random() * 5;
         FlxTween.tween(this, { y:y - 20 - jumpadd }, jumpSpeed, { complete: function(twn:FlxTween) {
             if(jumps-- > 0){
-                FlxTween.tween(this, { y:y + 20 + jumpadd}, jumpSpeed, {complete:jump});
+                FlxTween.tween(this, { y:y + 20 + jumpadd}, jumpSpeed + Math.random() * 0.05, {complete:jump});
             }else {
                 FlxTween.tween(this, { y:y + 20 + jumpadd}, jumpSpeed, {complete:finishJumps} );
             }

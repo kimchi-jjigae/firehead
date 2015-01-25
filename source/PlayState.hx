@@ -320,6 +320,12 @@ class PlayState extends FlxState
             FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
         }));
 
+        // turn into day
+        registerPlace(new Place(2100, 10, function() {
+            npcList[3].jumpScaredly(200, function(){});
+            npcList[4].jumpScaredly(200, function(){});
+        }));
+
 /*
         // bonfire - starting to get small
         registerPlace(new Place(1400, 10, function() {
