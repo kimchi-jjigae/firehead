@@ -34,10 +34,18 @@ class NPC extends FlxSprite {
     public function runAway(callb:Void->Void):Void {
         animation.play("default");
         facing = FlxObject.RIGHT;
-        FlxTween.tween(this, { x:x + 1000 }, 2, { complete: function(twn:FlxTween) {
+        FlxTween.tween(this, { x:x + 1500 }, 2, { complete: function(twn:FlxTween) {
             callb();
             this.visible = false;
         }});
+    }
+
+    public function faceLeft(yes:Bool = true):Void {
+        if(yes){
+            facing = FlxObject.LEFT;
+        }else{
+            facing = FlxObject.RIGHT;
+        }
     }
 
     public function jumpScaredly(times:Int, callback:Void->Void):Void {

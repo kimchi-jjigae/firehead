@@ -147,16 +147,14 @@ class PlayState extends FlxState
 		super.update();
 	}	
 
-    private function snowSetup()
-    {
+    private function snowSetup() {
         canvas = new FlxSprite();
         canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
 
         snowSystem = new SnowSystem(0, 200);
     }
 
-    private function spriteSetup()
-    {
+    private function spriteSetup() {
         layers = new LayerManager();
         add(layers);
 
@@ -172,10 +170,18 @@ class PlayState extends FlxState
         //layers.getForegroundLayer().add(legs);
 
         npcList.push(new NPC(150, 450));
-        npcList.push(new NPC(2500, 450));
+
+        //Two npcs standing together 
         npcList.push(new NPC(1000, 450));
-        for(npc in npcList)
-        {
+        npcList[1].faceLeft(false);
+
+        npcList.push(new NPC(1100, 450));
+
+        npcList.push(new NPC(2500, 450));
+        npcList.push(new NPC(2600, 450));
+
+
+        for(npc in npcList){
             layers.getItemLayer().add(npc);
         }
 
@@ -231,16 +237,16 @@ class PlayState extends FlxState
         }
     }
 
-            /* sorry just keeping this here for reference
-            if(FlxG.keys.justPressed.ENTER) {
-                text = new FlxText(150, 300, 200, "Test");
-                text.color = 0xFFFF66;
-                add(text);
-                new FlxTimer(5, destroyText, 1);
-                // timer.start();
-                // text.destroy();
-            }
-            */
+    /* sorry just keeping this here for reference
+       if(FlxG.keys.justPressed.ENTER) {
+       text = new FlxText(150, 300, 200, "Test");
+       text.color = 0xFFFF66;
+       add(text);
+       new FlxTimer(5, destroyText, 1);
+    // timer.start();
+    // text.destroy();
+    }
+     */
 
     public function registerPlaces():Void { // keep these are in order!!
 
@@ -262,6 +268,23 @@ class PlayState extends FlxState
                     player.setPowerScale(0.8);
                 });
             });
+        }));
+
+        // two npcs get startled and run away!
+        registerPlace(new Place(npcList[1].x - 200, 10, function() {
+            npcList[1].faceLeft(true);
+            npcList[1].jumpScaredly(1, function(){
+                //After npc has jumped, make it run away.
+                npcList[1].runAway(function(){});
+
+                npcList[2].jumpScaredly(2, function(){
+                    //After npc has jumped, make it run away.
+                    npcList[2].runAway(function(){
+                        player.setPowerScale(0.7);
+                    });
+                });
+            });
+
         }));
 
         // bonfire - starting to get small
