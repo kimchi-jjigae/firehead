@@ -9,10 +9,12 @@ import flixel.FlxSprite;
 import flixel.util.FlxAngle;
 import flixel.FlxG;
 import flixel.text.FlxText;
+import flixel.system.FlxSound;
 
 class Player extends FlxSprite
 {
     public var speed:Float = 200;
+    private var _fireCrackle:FlxSound;
 
     public function new(X:Float=0, Y:Float=0) 
     {
@@ -29,6 +31,10 @@ class Player extends FlxSprite
         drag.x = drag.y = 1600;
         acceleration.y = 0;
         // y = 360;
+
+        _fireCrackle = FlxG.sound.load(AssetPaths.fireloopable__mp3);
+        _fireCrackle.play();
+
     }
 
     private var controlsEnabled:Bool = true;

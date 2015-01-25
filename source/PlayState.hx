@@ -69,7 +69,7 @@ class PlayState extends FlxState
         placeManager = new Map<String, Place>();
         placeManager.set("01_darkness", new Place(0, 1));
 
-        // FlxG.sound.playMusic("music_1");
+        FlxG.sound.playMusic("music_1");
 
         placeManager.set("01_darkness", new Place(0, 100));
         placeManager.set("02_introtext", new Place(200, 100));
