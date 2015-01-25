@@ -44,48 +44,11 @@ class PlayState extends FlxState
 
         FlxG.sound.playMusic("music_1");
 
-        canvas = new FlxSprite();
-        snowSystem = new SnowSystem(0, 200);
-        
-        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+        snowSetup();
+        spriteSetup();
 
-        layers = new LayerManager();
-        add(layers);
-
-        // text = new FlxText(150, 300, 200, "Test");
-        // text.color = 0xFFFF66;
-        // add(text);
-
-        // legs = new Legs(90,370);
-
-        player = new Player(75,335);
-        FlxG.camera.follow(player, FlxCamera.SHAKE_BOTH_AXES, 1);
-        player = new Player(81,340);
         FlxG.camera.follow(player, FlxCamera.STYLE_PLATFORMER, 1);
-        
-
-        layers.getForegroundLayer().add(player);
-        layers.getForegroundLayer().add(canvas);
-        // layers.getForegroundLayer().add(legs);
-
         FlxG.camera.fade(FlxColor.BLACK, 2, true);
-
-        npc = new NPC(150,360);
-        layers.getForegroundLayer().add(npc);
-
-        campfire = new Object(150, 360, "campfire.png", 20, 20);
-        layers.getForegroundLayer().add(campfire);
-
-        placeManager = new Map<String, Place>();
-        placeManager.set("01_darkness", new Place(0, 1));
-
-        // FlxG.sound.playMusic("music_1");
-        
-        placeManager.set("01_darkness", new Place(0, 100));
-        placeManager.set("02_introtext", new Place(200, 100));
-
-        torch = new Torch();
-        add(torch);
 	}
 
 	/**
@@ -105,8 +68,6 @@ class PlayState extends FlxState
         canvas.x = FlxG.camera.scroll.x;
         canvas.fill(FlxColor.TRANSPARENT);
 
-        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
-
         if(FlxG.keys.anyPressed(["N"])){
             layers.night();
         }
@@ -115,12 +76,7 @@ class PlayState extends FlxState
             layers.day();
         }
 
-        for(flake in snowSystem.getSnowflakes())
-        {
-            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 1.5, 0x77A2F1F2);
-            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.0, 0xCCEDFEFF);
-        }
-
+        /*
         var placeIter = placeManager.keys();
         for(key in placeIter)
         {
@@ -142,6 +98,7 @@ class PlayState extends FlxState
             {
             }
         }
+        */
 
         if (Math.abs(npc.x - player.x) <= 20) {
             text = new FlxText(150, 300, 200, "Test");
@@ -161,11 +118,62 @@ class PlayState extends FlxState
             // timer.start();
             // text.destroy();
         }
+        snowUpdate();
 
-        snowSystem.update();
 		super.update();
 	}	
 
+    private function snowSetup()
+    {
+        canvas = new FlxSprite();
+        canvas.makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT, true);
+
+        snowSystem = new SnowSystem(0, 200);
+    }
+
+    private function spriteSetup()
+    {
+        layers = new LayerManager();
+        add(layers);
+
+        // text = new FlxText(150, 300, 200, "Test");
+        // text.color = 0xFFFF66;
+        // add(text);
+
+        // legs = new Legs(90,370);
+
+        player = new Player(81,340);
+        layers.getForegroundLayer().add(player);
+        layers.getForegroundLayer().add(canvas);
+        //layers.getForegroundLayer().add(legs);
+
+        npc = new NPC(150,360);
+        layers.getForegroundLayer().add(npc);
+
+        /*
+        campfire = new Object(150, 360, "campfire.png", 20, 20);
+        layers.getForegroundLayer().add(campfire);
+        */
+
+        placeManager = new Map<String, Place>();
+        placeManager.set("01_darkness", new Place(0, 100));
+        placeManager.set("02_introtext", new Place(200, 100));
+
+        torch = new Torch();
+        add(torch);
+    }
+
+    private function snowUpdate()
+    {
+        snowSystem.setWindSpeed(player.velocity.x * 0.0001);
+
+        for(flake in snowSystem.getSnowflakes())
+        {
+            canvas.drawCircle(flake.x - canvas.x - 1.5, flake.y - 1.5, 1.5, 0x77A2F1F2);
+            canvas.drawCircle(flake.x - canvas.x - 0.75, flake.y - 0.75, 1.0, 0xCCEDFEFF);
+        }
+        snowSystem.update();
+    }
 
     public function registerPlace(p:Place):Place {
         return null;
