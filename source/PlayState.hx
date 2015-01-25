@@ -84,8 +84,6 @@ class PlayState extends FlxState
             torch.turnIntoDay();
             layers.makeMountainsHappy();
         }
-<<<<<<< HEAD
-=======
 
         /*
         var placeIter = placeManager.keys();
@@ -131,7 +129,6 @@ class PlayState extends FlxState
         }
 
         torch.setPos(player.x + player.width * 0.5, player.y + player.height * 0.5);
->>>>>>> 5084e38eec6fc0d30969fca380af2a0c570c0623
         
         snowUpdate();
 
