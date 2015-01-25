@@ -285,7 +285,7 @@ class PlayState extends FlxState
         }));
 
         // npc gets scared and jumps away!
-        registerPlace(new Place(npcList[0].x - 100, 10, function() {
+        registerPlace(new Place(npcList[0].x - 200, 10, function() {
             player.enableControls(false);
 
             npcList[0].jumpScaredly(1, function(){
@@ -318,6 +318,11 @@ class PlayState extends FlxState
         registerPlace(new Place(2000, 10, function() {
             turnIntoDay();
             FlxTween.tween(this, { lol:10 } , 3, {complete:endGame});
+        }));
+
+        // become really strong and happy
+        registerPlace(new Place(2150, 10, function() {
+            player.setPowerScale(1.4);
         }));
 
         // turn into day

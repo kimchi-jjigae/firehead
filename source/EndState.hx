@@ -29,7 +29,7 @@ class EndState extends FlxState
         FlxG.mouse.visible = false;
 
         // Vector fonts look like complete ass in this
-        text = new FlxText(0, 20, 400, "Something Something You Won");
+        text = new FlxText(0, 20, 400, "Something Something You Won The Hearts of Everyone, Nice.");
         text.setFormat("assets/fonts/MoonFlower.ttf", 50, FlxColor.WHITE, 0, 0);
        
         text.alignment = "center";
